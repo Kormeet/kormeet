@@ -10,4 +10,6 @@ const colors = {
 export const theme = {
   background: colors.white,
   text: colors.black,
+  spinnerBackground: colors.white,
+  spinnerIndicator: colors.grey_0,
 }
