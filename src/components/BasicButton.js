@@ -7,7 +7,7 @@ const StyledPressable = styled.Pressable`
   background-color: ${(props) =>
     props.isFilled ? theme.buttonBackground : 'transparent'};
   border-radius: 5px;
-  width: ${(props) => (props.width ? `${props.width}px` : 'auto')};
+  width: ${(props) => (props.width ? props.width : 'auto')};
   padding: 5px 0;
   opacity: ${(props) => (props.disabled ? 0.5 : 1)};
 `
@@ -55,6 +55,6 @@ BasicButton.propTypes = {
   onPress: PropTypes.func.isRequired,
   isFilled: PropTypes.bool,
   fontSize: PropTypes.oneOf(['sm, md, lg']),
-  width: PropTypes.number,
+  width: PropTypes.string,
   disabled: PropTypes.bool,
 }
