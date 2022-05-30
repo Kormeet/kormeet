@@ -1,10 +1,9 @@
-import React from 'react'
-import { theme } from './theme'
-import { ThemeProvider } from 'styled-components'
-import { StatusBar } from 'expo-status-bar'
-import Navigation from './navigations'
-import { ProgressProvider } from './contexts'
-import Sample from './components/Sample'
+import React from 'react';
+import { theme } from './theme';
+import { ThemeProvider } from 'styled-components';
+import { StatusBar } from 'expo-status-bar';
+import Navigation from './navigations';
+import { ProgressProvider } from './contexts';
 
 export default function App() {
   return (
@@ -14,5 +13,5 @@ export default function App() {
         <Navigation />
       </ProgressProvider>
     </ThemeProvider>
-  )
+  );
 }
