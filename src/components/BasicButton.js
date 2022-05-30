@@ -9,11 +9,11 @@ const StyledPressable = styled.Pressable`
   border-radius: 5px;
   width: ${(props) => (props.width ? `${props.width}px` : 'auto')};
   padding: 5px 0;
-  /* box-shadow: 5px 5px gray; */
+  opacity: ${(props) => (props.disabled ? 0.5 : 1)};
 `
 const StyledText = styled.Text`
   text-align: center;
-  color: ${theme.buttonBackground};
+  color: ${(props) => (props.isFilled ? 'white' : theme.buttonBackground)};
   font-size: ${(props) => {
     switch (props.fontSize) {
       case 'sm':
@@ -34,10 +34,18 @@ export default function BasicButton({
   isFilled,
   fontSize,
   width,
+  disabled,
 }) {
   return (
-    <StyledPressable onPress={onPress} isFilled={isFilled} width={width}>
-      <StyledText fontSize={fontSize}>{title}</StyledText>
+    <StyledPressable
+      onPress={onPress}
+      isFilled={isFilled}
+      width={width}
+      disabled={disabled}
+    >
+      <StyledText fontSize={fontSize} isFilled={isFilled}>
+        {title}
+      </StyledText>
     </StyledPressable>
   )
 }
@@ -48,4 +56,5 @@ BasicButton.propTypes = {
   isFilled: PropTypes.bool,
   fontSize: PropTypes.oneOf(['sm, md, lg']),
   width: PropTypes.number,
+  disabled: PropTypes.bool,
 }
