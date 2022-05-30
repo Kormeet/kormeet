@@ -5,7 +5,7 @@ import { theme } from '../theme'
 
 const StyledTextInput = styled.TextInput`
   background-color: ${theme.textInputBackground};
-  width: ${(props) => (props.width ? `${props.width}px` : 'auto')};
+  width: ${(props) => (props.width ? props.width : 'auto')};
   padding: 5px;
 `
 
@@ -15,6 +15,7 @@ export default function BasicTextInput({
   width,
   value,
 }) {
+  console.log(width)
   return (
     <StyledTextInput
       placeholder={placeholder}
@@ -28,6 +29,6 @@ export default function BasicTextInput({
 BasicTextInput.propTypes = {
   placeholder: PropTypes.string,
   onChangeText: PropTypes.func.isRequired,
-  width: PropTypes.number,
+  width: PropTypes.string,
   value: PropTypes.string.isRequired,
 }
