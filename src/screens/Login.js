@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components/native';
 import { Image } from 'react-native';
 import BasicButton from '../components/BasicButton';
@@ -7,14 +7,13 @@ import Logo from '../../assets/images/logo.png';
 
 const MainContainer = styled.View`
   flex: 1;
-  background-color: ${({ theme }) => theme.background};
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  background-color: ${({ theme }) => theme.background};
 `;
 
 const Container = styled.View`
-  width: 250px;
-  justify-content: space-between;
+  width: 70%;
 `;
 
 const RowContainer = styled.View`
@@ -23,6 +22,9 @@ const RowContainer = styled.View`
 `;
 
 export default function Login({ navigation }) {
+  const [id, setId] = useState('');
+  const [password, setPassword] = useState('');
+
   return (
     <MainContainer>
       <Container>
@@ -33,15 +35,24 @@ export default function Login({ navigation }) {
             resizeMode: 'contain',
           }}
         />
-        <BasicTextInput placeholder="아이디" width="100%" smargin="0 0 5px 0" />
         <BasicTextInput
+          onChangeText={setId}
+          placeholder="아이디"
+          fontSize="30px"
+          width="100%"
+          smargin="0 0 5px 0"
+        />
+        <BasicTextInput
+          onChangeText={setPassword}
           placeholder="비밀번호"
+          fontSize="30px"
           width="100%"
           smargin="0 0 5px 0"
         />
         <BasicButton
           title="Login"
           onPress={() => navigation.navigate('Login')}
+          fontSize="30px"
           width="100%"
           smargin="0 0 5px 0"
           isFilled
