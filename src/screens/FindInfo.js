@@ -1,42 +1,54 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import { Text, Button } from 'react-native';
+import BasicButton from '../components/BasicButton';
+import BasicTextInput from '../components/BasicTextInput';
 
-const Container = styled.View`
+const MainContainer = styled.View`
   flex: 1;
   justify-content: center;
   align-items: center;
   background-color: ${({ theme }) => theme.background};
 `;
 
-const RowContainer = styled.View`
-  flex-direction: row;
+const Container = styled.View`
+  width: 80%;
 `;
 
-const StyledTextInput = styled.TextInput`
-  background-color: ${({ theme }) => theme.textInput};
-  margin-bottom: 5px;
-  padding: 5px;
-  width: 200px;
+const RowContainer = styled.View`
+  flex-direction: row;
+  justify-content: space-around;
+  margin: 0 0 5px 0;
+`;
+
+const StyledLabel = styled.Text`
+  font-size: 20px;
 `;
 
 export default function FindInfo({ navigation }) {
   return (
-    <Container>
-      <Text>인증하기</Text>
-      <RowContainer>
-        <StyledTextInput placeholder="전화번호 입력" />
-        <Button title="인증" />
-      </RowContainer>
-      <RowContainer>
-        <StyledTextInput placeholder="인증번호 입력" />
-        <Button title="확인" />
-      </RowContainer>
-      <Button title="아이디 찾기" />
-      <Button
-        title="비밀번호 재설정"
-        onPress={() => navigation.navigate('ResetPw')}
-      />
-    </Container>
+    <MainContainer>
+      <Container>
+        <StyledLabel>인증하기</StyledLabel>
+        <RowContainer>
+          <BasicTextInput placeholder="전화번호 입력" width="78%" />
+          <BasicButton title="인증" isFilled width="20%" />
+        </RowContainer>
+        <RowContainer>
+          <BasicTextInput
+            placeholder="인증번호 입력"
+            width="78
+            %"
+          />
+          <BasicButton title="확인" isFilled width="20%" />
+        </RowContainer>
+        <RowContainer>
+          <BasicButton title="아이디 찾기" />
+          <BasicButton
+            title="비밀번호 재설정"
+            onPress={() => navigation.navigate('ResetPw')}
+          />
+        </RowContainer>
+      </Container>
+    </MainContainer>
   );
 }

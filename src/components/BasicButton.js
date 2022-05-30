@@ -15,18 +15,7 @@ const StyledPressable = styled.Pressable`
 const StyledText = styled.Text`
   text-align: center;
   color: ${props => (props.isFilled ? 'white' : theme.buttonBackground)};
-  font-size: ${props => {
-    switch (props.fontSize) {
-      case 'sm':
-        return '15px';
-      case 'md':
-        return '20px';
-      case 'lg':
-        return '30px';
-      default:
-        return '15px';
-    }
-  }};
+  font-size: ${props => (props.fontSize ? props.fontSize : '20px')};
 `;
 
 export default function BasicButton({
@@ -57,7 +46,7 @@ BasicButton.propTypes = {
   title: PropTypes.string.isRequired,
   onPress: PropTypes.func.isRequired,
   isFilled: PropTypes.bool,
-  fontSize: PropTypes.oneOf(['sm, md, lg']),
+  fontSize: PropTypes.string,
   width: PropTypes.string,
   smargin: PropTypes.string,
   disabled: PropTypes.bool,
