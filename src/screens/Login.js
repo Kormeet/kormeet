@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components/native';
 import { Image } from 'react-native';
 import BasicButton from '../components/BasicButton';
@@ -23,7 +23,12 @@ const RowContainer = styled.View`
 
 export default function Login({ navigation }) {
   const [id, setId] = useState('');
-  const [password, setPassword] = useState('');
+  const [pw, setPw] = useState('');
+  const [disabled, setDisabled] = useState(true);
+
+  useEffect(() => {
+    setDisabled(!(id && pw));
+  }, [id, pw]);
 
   return (
     <MainContainer>
@@ -43,7 +48,7 @@ export default function Login({ navigation }) {
           smargin="0 0 5px 0"
         />
         <BasicTextInput
-          onChangeText={setPassword}
+          onChangeText={setPw}
           placeholder="비밀번호"
           fontSize="30px"
           width="100%"
@@ -51,10 +56,13 @@ export default function Login({ navigation }) {
         />
         <BasicButton
           title="Login"
-          onPress={() => navigation.navigate('Login')}
+          onPress={() => {
+            console.log('login (미구현)');
+          }}
           fontSize="30px"
           width="100%"
           smargin="0 0 5px 0"
+          disabled={disabled}
           isFilled
         />
         <RowContainer>
@@ -69,6 +77,14 @@ export default function Login({ navigation }) {
             smargin="0 0 5px 0"
           />
         </RowContainer>
+
+        <BasicButton
+          title="(네비게이션 놔둘 곳이 없어서 임시로 놔둔) 내정보"
+          onPress={() => {
+            navigation.navigate('MyInfo');
+          }}
+          smargin="0 0 5px 0"
+        />
       </Container>
     </MainContainer>
   );
