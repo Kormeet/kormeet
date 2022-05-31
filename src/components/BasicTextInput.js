@@ -18,6 +18,7 @@ export default function BasicTextInput({
   width,
   smargin,
   value,
+  disabled,
 }) {
   return (
     <StyledTextInput
@@ -27,6 +28,7 @@ export default function BasicTextInput({
       width={width}
       smargin={smargin}
       value={value}
+      editable={!disabled}
     />
   );
 }
@@ -37,5 +39,6 @@ BasicTextInput.propTypes = {
   fontSize: PropTypes.string,
   width: PropTypes.string,
   smargin: PropTypes.string,
-  value: PropTypes.string.isRequired,
+  value: PropTypes.string,
+  disabled: PropTypes.bool,
 };

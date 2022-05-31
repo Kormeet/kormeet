@@ -2,7 +2,15 @@ import React, { useContext } from 'react';
 import { Image } from 'react-native';
 import { ThemeContext } from 'styled-components';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Login, Signup, FindInfo, ResetPw } from '../screens';
+import {
+  Login,
+  Signup,
+  FindInfo,
+  ResetPw,
+  MyInfo,
+  ChangeInfo,
+  ConfirmPw,
+} from '../screens';
 import Logo from '../../assets/images/logo.png';
 
 const Stack = createStackNavigator();
@@ -35,6 +43,9 @@ const AuthStack = () => {
       <Stack.Screen name="Signup" component={Signup} />
       <Stack.Screen name="FindInfo" component={FindInfo} />
       <Stack.Screen name="ResetPw" component={ResetPw} />
+      <Stack.Screen name="MyInfo" component={MyInfo} />
+      <Stack.Screen name="ConfirmPw" component={ConfirmPw} />
+      <Stack.Screen name="ChangeInfo" component={ChangeInfo} />
     </Stack.Navigator>
   );
 };
