@@ -136,6 +136,7 @@ export default function Signup({ navigation }) {
               onChangeText={setPhoneNo}
               width="78%"
               disabled={phoneNoSuccess}
+              keyboardType="decimal-pad"
             />
             <BasicButton
               title="인증"
@@ -152,6 +153,7 @@ export default function Signup({ navigation }) {
               onChangeText={setPhoneConfirm}
               width="78%"
               disabled={phoneNoSuccess}
+              keyboardType="decimal-pad"
             />
             <BasicButton
               title="확인"
@@ -183,11 +185,16 @@ export default function Signup({ navigation }) {
 
         <FormView>
           <StyledLabel>비밀번호</StyledLabel>
-          <BasicTextInput placeholder="비밀번호 입력" onChangeText={setPw} />
+          <BasicTextInput
+            placeholder="비밀번호 입력"
+            onChangeText={setPw}
+            secureTextEntry
+          />
           <StyledLabel>비밀번호 확인</StyledLabel>
           <BasicTextInput
             placeholder="비밀번호 입력"
             onChangeText={setPwConfirm}
+            secureTextEntry
           />
         </FormView>
 

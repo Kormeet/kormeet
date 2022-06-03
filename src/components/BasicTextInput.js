@@ -19,6 +19,8 @@ export default function BasicTextInput({
   smargin,
   value,
   disabled,
+  keyboardType,
+  secureTextEntry,
 }) {
   return (
     <StyledTextInput
@@ -29,6 +31,8 @@ export default function BasicTextInput({
       smargin={smargin}
       value={value}
       editable={!disabled}
+      keyboardType={keyboardType}
+      secureTextEntry={secureTextEntry}
     />
   );
 }
@@ -41,4 +45,6 @@ BasicTextInput.propTypes = {
   smargin: PropTypes.string,
   value: PropTypes.string,
   disabled: PropTypes.bool,
+  keyboardType: PropTypes.string,
+  secureTextEntry: PropTypes.bool,
 };

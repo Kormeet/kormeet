@@ -58,12 +58,14 @@ export default function ResetPw({ navigation }) {
           placeholder="비밀번호 입력"
           onChangeText={setPw}
           smargin="0 0 5px 0"
+          secureTextEntry
         />
         <StyledLabel>비밀번호 확인</StyledLabel>
         <BasicTextInput
           placeholder="비밀번호 입력"
           onChangeText={setPwConfirm}
           smargin="0 0 5px 0"
+          secureTextEntry
         />
         <BasicButton
           title="확인"
