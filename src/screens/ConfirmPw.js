@@ -40,6 +40,8 @@ export default function ConfirmPw({ navigation }) {
       Alert.alert('ㅇㅈ', 'ㅇㅈ');
       // 임시로 1234
       setPwSuccess(true);
+    } else {
+      Alert.alert('ㄴㅇㅈ', 'ㄴㅇㅈ');
     }
   };
 
@@ -52,6 +54,7 @@ export default function ConfirmPw({ navigation }) {
             placeholder="비밀번호 입력"
             width="78%"
             onChangeText={pwChanged}
+            secureTextEntry
           />
           <BasicButton
             title="인증"
