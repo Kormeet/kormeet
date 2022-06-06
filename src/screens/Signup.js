@@ -1,51 +1,58 @@
-import React, { useEffect, useState } from 'react';
-import { Alert } from 'react-native';
-import styled from 'styled-components/native';
-import BasicButton from '../components/BasicButton';
-import BasicTextInput from '../components/BasicTextInput';
+import React, { useEffect, useState, useContext } from 'react'
+import { Alert } from 'react-native'
+import styled from 'styled-components/native'
+import BasicButton from '../components/BasicButton'
+import BasicTextInput from '../components/BasicTextInput'
+import { ProgressContext, UserContext } from '../contexts'
+import { createUser, existEmail, signup } from '../utils/firebase'
 
 const MainContainer = styled.View`
   flex: 1;
   justify-content: center;
   align-items: center;
   background-color: ${({ theme }) => theme.background};
-`;
+`
 
 const Container = styled.View`
   width: 80%;
-`;
+`
 
 const FormView = styled.View`
   margin: 0 0 20px 0;
-`;
+`
 
 const RowContainer = styled.View`
   flex-direction: row;
   justify-content: space-between;
   margin: 0 0 5px 0;
-`;
+`
 
 const StyledLabel = styled.Text`
   font-size: 20px;
-`;
+`
 
 export default function Signup({ navigation }) {
   // 필드 값
-  const [phoneNo, setPhoneNo] = useState('');
-  const [phoneConfirm, setPhoneConfirm] = useState('');
-  const [id, setId] = useState('');
-  const [pw, setPw] = useState('');
-  const [pwConfirm, setPwConfirm] = useState('');
-  const [nickname, setNickname] = useState('');
+  const [phoneNo, setPhoneNo] = useState('')
+  const [phoneConfirm, setPhoneConfirm] = useState('')
+  const [generatedPhoneConfirm, setGeneratedPhoneConfirm] = useState('')
+  const [id, setId] = useState('')
+  const [pw, setPw] = useState('')
+  const [pwConfirm, setPwConfirm] = useState('')
+  const [nickname, setNickname] = useState('')
+  const { dispatch } = useContext(UserContext)
+  const { spinner } = useContext(ProgressContext)
+
   // 버튼 활성화 여부
   // const [phoneNoDisabled, setPhoneNoDisabled] = useState(true);
   // const [idDisabled, setIdDisabled] = useState(true);
   // const [nicknameDisabled, setNicknameDisabled] = useState(true);
-  const [disabled, setDisabled] = useState(true);
+  const [disabled, setDisabled] = useState(true)
   // 인증 및 중복확인 여부
-  const [phoneNoSuccess, setPhoneNoSuccess] = useState(false);
-  const [idSuccess, setIdSuccess] = useState(false);
-  const [nicknameSuccess, setNicknameSuccess] = useState(false);
+  const [phoneNoSuccess, setPhoneNoSuccess] = useState(false)
+  const [idSuccess, setIdSuccess] = useState(false)
+  const [passwordValid, setPasswordValid] = useState(false)
+  const [nicknameSuccess, setNicknameSuccess] = useState(false)
 
   useEffect(() => {
     setDisabled(
@@ -56,74 +63,96 @@ export default function Signup({ navigation }) {
         nickname &&
         phoneNoSuccess &&
         idSuccess &&
-        nicknameSuccess
+        nicknameSuccess &&
+        passwordValid
       )
-    );
-  }, [id, pw, pwConfirm, nickname, phoneNoSuccess, idSuccess, nicknameSuccess]);
+    )
+  }, [
+    id,
+    pw,
+    pwConfirm,
+    nickname,
+    phoneNoSuccess,
+    idSuccess,
+    nicknameSuccess,
+    passwordValid,
+  ])
+
+  useEffect(() => {
+    setPasswordValid(pw && pw === pwConfirm && pw.length > 5)
+  }, [pw, pwConfirm])
 
   const phoneNoClicked = () => {
-    Alert.alert('인증번호', '(임시 랜덤 숫자 - 인증번호 구현 어떻게?) 1234');
-  };
+    const gen = `${Math.floor(Math.random() * 9000) + 1000}`
+    console.log(gen)
+    setGeneratedPhoneConfirm(gen)
+    console.log(generatedPhoneConfirm)
+  }
 
   const phoneConfirmClicked = () => {
-    if (phoneConfirm === '1234') {
+    console.log(phoneConfirm, generatedPhoneConfirm)
+    if (phoneConfirm === generatedPhoneConfirm) {
       // 경고 메시지로 수정
-      Alert.alert('전화번호 인증', '인증되었습니다');
-      setPhoneNoSuccess(true);
+      Alert.alert('전화번호 인증', '인증되었습니다')
+      setPhoneNoSuccess(true)
     } else {
       // 경고 메시지로 수정
-      Alert.alert('전화번호 인증', '인증 실패');
-      setPhoneNoSuccess(false);
+      Alert.alert('전화번호 인증', '인증 실패')
+      setPhoneNoSuccess(false)
     }
-  };
+  }
 
-  const idChanged = value => {
-    if (idSuccess === true) setIdSuccess(false);
-    setId(value);
-  };
+  const idChanged = (value) => {
+    if (idSuccess === true) setIdSuccess(false)
+    setId(value)
+  }
 
-  const idConfirmClicked = () => {
+  const idConfirmClicked = async () => {
+    const email = id.trim()
+    const exist = await existEmail(email)
     //중복확인 코드
     //만약 (중복없다면)
     // 사용가능한 아이디입니다.(// 경고 메시지로 수정)
-    Alert.alert('ㅇㅈ', 'ㅇㅈ');
-    setIdSuccess(true);
+    if (exist) {
+      setIdSuccess(false)
+      Alert.alert('이미 존재하는 이메일입니다.')
+    } else {
+      setIdSuccess(true)
+      Alert.alert('사용 가능한 이메일입니다.')
+    }
     // 만약 (중복있다면)
     // 알림메시지 사용할 수 없는 아이디입니다. (// 경고 메시지로 수정)
-  };
+  }
 
-  const nicknameChanged = value => {
-    if (nicknameSuccess === true) setNicknameSuccess(false);
-    setNickname(value);
-  };
+  const nicknameChanged = (value) => {
+    if (nicknameSuccess === true) setNicknameSuccess(false)
+    setNickname(value)
+  }
 
-  const nicknameConfirmClicked = () => {
+  const nicknameConfirmClicked = async () => {
     //중복확인 코드
     //만약 (중복없다면)
     // 사용가능한 닉네임입니다. (// 경고 메시지로 수정)
-    Alert.alert('', 'ㅇㅈ');
-    setNicknameSuccess(true);
+    Alert.alert('', 'ㅇㅈ')
+    setNicknameSuccess(true)
     // 만약 (중복있다면)
     // 알림메시지 사용할 수 없는 닉네임입니다. (// 경고 메시지로 수정)
-  };
+  }
 
-  const signupClicked = () => {
-    if (pw === pwConfirm) {
-      Alert.alert('회원가입', '가입해주셔서 감사합니다. {누구누구}님!', [
-        {
-          text: '확인',
-          onPress: () => {
-            navigation.navigate('Login');
-          },
-        },
-      ]);
-    } else {
-      // 경고 메시지로 수정
-      Alert.alert('회원가입', '비밀번호가 일치하지 않습니다', [
-        { text: '확인' },
-      ]);
-    }
-  };
+  const signupClicked = async () => {
+    spinner.start()
+    const email = id.trim()
+    const password = pw.trim()
+    const user = await signup({
+      email,
+      password,
+      phoneNumber: phoneNo,
+      nickname,
+    })
+    Alert.alert(`${nickname ? nickname : email}님! 회원가입이 완료되었습니다. `)
+    dispatch({ email, password, nickname })
+    spinner.stop()
+  }
 
   return (
     <MainContainer>
@@ -137,6 +166,7 @@ export default function Signup({ navigation }) {
               width="78%"
               disabled={phoneNoSuccess}
               keyboardType="decimal-pad"
+              value={phoneNo}
             />
             <BasicButton
               title="인증"
@@ -154,6 +184,7 @@ export default function Signup({ navigation }) {
               width="78%"
               disabled={phoneNoSuccess}
               keyboardType="decimal-pad"
+              value={phoneConfirm}
             />
             <BasicButton
               title="확인"
@@ -172,6 +203,7 @@ export default function Signup({ navigation }) {
               placeholder="아이디 입력"
               onChangeText={idChanged}
               width="78%"
+              value={id}
             />
             <BasicButton
               title="중복확인"
@@ -189,12 +221,14 @@ export default function Signup({ navigation }) {
             placeholder="비밀번호 입력"
             onChangeText={setPw}
             secureTextEntry
+            value={pw}
           />
           <StyledLabel>비밀번호 확인</StyledLabel>
           <BasicTextInput
             placeholder="비밀번호 입력"
             onChangeText={setPwConfirm}
             secureTextEntry
+            value={pwConfirm}
           />
         </FormView>
 
@@ -205,6 +239,7 @@ export default function Signup({ navigation }) {
               placeholder="닉네임 입력"
               onChangeText={nicknameChanged}
               width="78%"
+              value={nickname}
             />
             <BasicButton
               title="중복확인"
@@ -223,5 +258,5 @@ export default function Signup({ navigation }) {
         />
       </Container>
     </MainContainer>
-  );
+  )
 }
