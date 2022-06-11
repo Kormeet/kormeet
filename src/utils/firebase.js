@@ -6,7 +6,8 @@ const app = firebase.initializeApp(config)
 const Auth = app.auth()
 
 export const login = async ({ email, password }) => {
-  return await Auth.signInWithEmailAndPassword(email, password)
+  const { user } = await Auth.signInWithEmailAndPassword(email, password)
+  return user
 }
 export const logout = async () => {
   return await Auth.signOut()
@@ -29,15 +30,37 @@ export const existEmail = async (email) => {
   let exist = false
   await ref.get().then((res) => {
     res.forEach((doc) => {
-      console.log(doc.data().email, email)
-      console.log('==', doc.data().email == email)
-      console.log('===', doc.data().email === email)
       if (doc.data().email === email) {
         exist = true
         return
       }
     })
   })
-  console.log('last', exist)
+  return exist
+}
+export const existNickname = async (nickname) => {
+  const ref = await DB.collection('users')
+  let exist = false
+  await ref.get().then((res) => {
+    res.forEach((doc) => {
+      if (doc.data().nickname === nickname) {
+        exist = true
+        return
+      }
+    })
+  })
+  return exist
+}
+export const existPhoneNumber = async (phoneNumber) => {
+  const ref = await DB.collection('users')
+  let exist = false
+  await ref.get().then((res) => {
+    res.forEach((doc) => {
+      if (doc.data().phoneNumber === phoneNumber) {
+        exist = true
+        return
+      }
+    })
+  })
   return exist
 }
