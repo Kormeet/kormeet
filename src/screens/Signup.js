@@ -182,6 +182,7 @@ export default function Signup({ navigation }) {
     } else {
       setIdSuccess(true)
       Alert.alert('사용 가능한 이메일입니다.')
+      setEmailWT('')
     }
   }
 
