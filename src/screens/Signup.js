@@ -4,7 +4,12 @@ import styled from 'styled-components/native'
 import BasicButton from '../components/BasicButton'
 import BasicTextInput from '../components/BasicTextInput'
 import { ProgressContext, UserContext } from '../contexts'
-import { createUser, existEmail, signup } from '../utils/firebase'
+import {
+  createUser,
+  existEmail,
+  existNickname,
+  signup,
+} from '../utils/firebase'
 
 const MainContainer = styled.View`
   flex: 1;
@@ -130,28 +135,37 @@ export default function Signup({ navigation }) {
   }
 
   const nicknameConfirmClicked = async () => {
-    //중복확인 코드
-    //만약 (중복없다면)
-    // 사용가능한 닉네임입니다. (// 경고 메시지로 수정)
-    Alert.alert('', 'ㅇㅈ')
-    setNicknameSuccess(true)
-    // 만약 (중복있다면)
-    // 알림메시지 사용할 수 없는 닉네임입니다. (// 경고 메시지로 수정)
+    const _nickname = nickname.trim()
+    const exist = await existNickname(_nickname)
+    if (exist) {
+      setNicknameSuccess(false)
+      Alert.alert('이미 존재하는 닉네임입니다.')
+    } else {
+      setNicknameSuccess(true)
+      Alert.alert('사용 가능한 닉네임입니다.')
+    }
   }
 
   const signupClicked = async () => {
-    spinner.start()
-    const email = id.trim()
-    const password = pw.trim()
-    const user = await signup({
-      email,
-      password,
-      phoneNumber: phoneNo,
-      nickname,
-    })
-    Alert.alert(`${nickname ? nickname : email}님! 회원가입이 완료되었습니다. `)
-    dispatch({ email, password, nickname })
-    spinner.stop()
+    try {
+      spinner.start()
+      const email = id.trim()
+      const password = pw.trim()
+      const user = await signup({
+        email,
+        password,
+        phoneNumber: phoneNo,
+        nickname,
+      })
+      Alert.alert(
+        `${nickname ? nickname : email}님! 회원가입이 완료되었습니다. `
+      )
+      dispatch({ email: user.email, uid: user.uid, nickname: user.nickname })
+    } catch (e) {
+      Alert.alert('SignUp Error', e.message)
+    } finally {
+      spinner.stop()
+    }
   }
 
   return (
