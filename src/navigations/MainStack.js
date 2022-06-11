@@ -1,17 +1,18 @@
-import { createStackNavigator } from '@react-navigation/stack'
-import React, { useContext } from 'react'
-import { ThemeContext } from 'styled-components/native'
-import { Channel, ChannelCreation } from '../screens'
-import Logo from '../../assets/images/logo.png'
-import { Image } from 'react-native'
-import MainTab from './MainTab'
+import { createStackNavigator } from '@react-navigation/stack';
+import React, { useContext } from 'react';
+import { Image } from 'react-native';
+import { ThemeContext } from 'styled-components';
+import MainTab from './MainTab';
+import Logo from '../../assets/images/logo.png';
+import { ConfirmPw, ChangeInfo, BulletinBoardArticle } from '../screens';
 
-const Stack = createStackNavigator()
+const Stack = createStackNavigator();
 
 export default function MainStack() {
-  const theme = useContext(ThemeContext)
+  const theme = useContext(ThemeContext);
   return (
     <Stack.Navigator
+      initialRouteName="Main"
       screenOptions={{
         headerTitleAlign: 'center',
         cardStyle: { backgroundColor: theme.backgroundColor },
@@ -27,9 +28,26 @@ export default function MainStack() {
         ),
       }}
     >
-      <Stack.Screen name="Main" component={MainTab} />
-      <Stack.Screen name="Channel Creation" component={ChannelCreation} />
-      <Stack.Screen name="Channel" component={Channel} />
+      <Stack.Screen
+        options={{ headerShown: false }}
+        name="Main"
+        component={MainTab}
+      />
+      <Stack.Screen
+        name="ConfirmPw"
+        component={ConfirmPw}
+        options={{ headerTitle: '비밀번호 확인' }}
+      />
+      <Stack.Screen
+        name="ChangeInfo"
+        component={ChangeInfo}
+        options={{ headerTitle: '개인정보 변경' }}
+      />
+      <Stack.Screen
+        name="BulletinBoardArticle"
+        component={BulletinBoardArticle}
+        options={{ headerTitle: '자유게시판 게시글' }}
+      />
     </Stack.Navigator>
-  )
+  );
 }
