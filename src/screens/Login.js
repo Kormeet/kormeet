@@ -39,11 +39,11 @@ export default function Login({ navigation }) {
       spinner.start()
       const email = id.trim()
       const password = pw.trim()
-      const response = await login({ email, password })
+      const user = await login({ email, password })
       dispatch({
-        email: response.user.email,
-        uid: response.user.uid,
-        nickname: response.user.nickname,
+        email: user.email,
+        uid: user.uid,
+        nickname: user.nickname,
       })
     } catch (e) {
       Alert.alert('Login Error', e.message)
