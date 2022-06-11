@@ -51,3 +51,16 @@ export const existNickname = async (nickname) => {
   })
   return exist
 }
+export const existPhoneNumber = async (phoneNumber) => {
+  const ref = await DB.collection('users')
+  let exist = false
+  await ref.get().then((res) => {
+    res.forEach((doc) => {
+      if (doc.data().phoneNumber === phoneNumber) {
+        exist = true
+        return
+      }
+    })
+  })
+  return exist
+}
