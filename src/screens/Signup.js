@@ -181,6 +181,7 @@ export default function Signup({ navigation }) {
       setEmailWT('이미 사용중인 이메일입니다.')
     } else {
       setIdSuccess(true)
+      Alert.alert('사용 가능한 이메일입니다.')
       setEmailWT('')
     }
   }
