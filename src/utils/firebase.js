@@ -17,6 +17,10 @@ export const signup = async ({ email, password, phoneNumber, nickname }) => {
   await createUser({ email, phoneNumber, nickname })
   return user
 }
+export const sendPasswordResetEmail = async (email) => {
+  await Auth.sendPasswordResetEmail(email)
+}
+
 const DB = firebase.firestore()
 export const createUser = async ({ email, phoneNumber, nickname }) => {
   const newUserRef = await DB.collection('users').doc()
@@ -49,4 +53,11 @@ export const existPhoneNumber = async (phoneNumber) => {
     .then((res) => (exist = !res.empty))
   return exist
 }
-export const findEmailByPhoneNumber = async (phoneNumber) => {}
+export const findEmailByPhoneNumber = async (phoneNumber) => {
+  let email = ''
+  await DB.collection('users')
+    .where('phoneNumber', '==', phoneNumber)
+    .get()
+    .then((qs) => (email = qs.docs[0].data().email))
+  return email
+}
