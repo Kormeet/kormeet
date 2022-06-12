@@ -149,7 +149,6 @@ export default function Signup({ navigation }) {
   }
 
   const phoneConfirmClicked = () => {
-    console.log(phoneConfirm, generatedPhoneConfirm)
     if (phoneConfirm === generatedPhoneConfirm) {
       // 경고 메시지로 수정
       Alert.alert('전화번호 인증', '인증되었습니다')
