@@ -8,7 +8,7 @@ const StyledPressable = styled.Pressable`
     props.isFilled ? theme.buttonBackground : 'transparent'};
   border-radius: 5px;
   width: ${props => (props.width ? props.width : 'auto')};
-  padding: 5px 0;
+  padding: 5px 5px;
   opacity: ${props => (props.disabled ? 0.5 : 1)};
   margin: ${props => (props.smargin ? props.smargin : '0')};
 `;

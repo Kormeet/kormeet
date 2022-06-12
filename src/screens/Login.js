@@ -1,56 +1,56 @@
-import React, { useContext, useEffect, useState } from 'react'
-import styled from 'styled-components/native'
-import { Alert, Image } from 'react-native'
-import BasicButton from '../components/BasicButton'
-import BasicTextInput from '../components/BasicTextInput'
-import Logo from '../../assets/images/logo.png'
-import { ProgressContext, UserContext } from '../contexts'
-import { login } from '../utils/firebase'
+import React, { useContext, useEffect, useState } from 'react';
+import styled from 'styled-components/native';
+import { Alert, Image } from 'react-native';
+import BasicButton from '../components/BasicButton';
+import BasicTextInput from '../components/BasicTextInput';
+import Logo from '../../assets/images/logo.png';
+import { ProgressContext, UserContext } from '../contexts';
+import { login } from '../utils/firebase';
 
 const MainContainer = styled.View`
   flex: 1;
   justify-content: center;
   align-items: center;
   background-color: ${({ theme }) => theme.background};
-`
+`;
 
 const Container = styled.View`
   width: 70%;
-`
+`;
 
 const RowContainer = styled.View`
   flex-direction: row;
   justify-content: space-around;
-`
+`;
 
 export default function Login({ navigation }) {
-  const { dispatch } = useContext(UserContext)
-  const { spinner } = useContext(ProgressContext)
-  const [id, setId] = useState('')
-  const [pw, setPw] = useState('')
-  const [disabled, setDisabled] = useState(true)
+  const { dispatch } = useContext(UserContext);
+  const { spinner } = useContext(ProgressContext);
+  const [id, setId] = useState('');
+  const [pw, setPw] = useState('');
+  const [disabled, setDisabled] = useState(true);
 
   useEffect(() => {
-    setDisabled(!(id && pw))
-  }, [id, pw])
+    setDisabled(!(id && pw));
+  }, [id, pw]);
 
   const onLoginButtonPressed = async () => {
     try {
-      spinner.start()
-      const email = id.trim()
-      const password = pw.trim()
-      const user = await login({ email, password })
+      spinner.start();
+      const email = id.trim();
+      const password = pw.trim();
+      const user = await login({ email, password });
       dispatch({
         email: user.email,
         uid: user.uid,
         nickname: user.nickname,
-      })
+      });
     } catch (e) {
-      Alert.alert('Login Error', e.message)
+      Alert.alert('Login Error', e.message);
     } finally {
-      spinner.stop()
+      spinner.stop();
     }
-  }
+  };
 
   return (
     <MainContainer>
@@ -100,15 +100,7 @@ export default function Login({ navigation }) {
             smargin="0 0 5px 0"
           />
         </RowContainer>
-
-        <BasicButton
-          title="(네비게이션 놔둘 곳이 없어서 임시로 놔둔) 내정보"
-          onPress={() => {
-            navigation.navigate('MyInfo')
-          }}
-          smargin="0 0 5px 0"
-        />
       </Container>
     </MainContainer>
-  )
+  );
 }

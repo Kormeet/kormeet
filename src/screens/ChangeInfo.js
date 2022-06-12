@@ -80,8 +80,8 @@ export default function ChangeInfo({ navigation }) {
   const changeInfoClicked = () => {
     if (pw === pwConfirm) {
       Alert.alert(
-        '회원정보 변경',
-        '회원님의 회원정보가 정상적으로 변경되었습니다.',
+        '개인정보 변경',
+        '회원님의 개인정보가 정상적으로 변경되었습니다.',
         [
           {
             text: '확인',
@@ -93,7 +93,7 @@ export default function ChangeInfo({ navigation }) {
       );
     } else {
       // 경고 메시지로 수정
-      Alert.alert('회원정보 변경', '비밀번호가 일치하지 않습니다', [
+      Alert.alert('개인정보 변경', '비밀번호가 일치하지 않습니다', [
         { text: '확인' },
       ]);
     }
@@ -153,7 +153,7 @@ export default function ChangeInfo({ navigation }) {
           </RowContainer>
         </FormView>
         <BasicButton
-          title="개인 정보 변경"
+          title="개인정보 변경"
           onPress={changeInfoClicked}
           isFilled
           disabled={disabled}
