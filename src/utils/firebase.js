@@ -17,6 +17,10 @@ export const signup = async ({ email, password, phoneNumber, nickname }) => {
   await createUser({ email, phoneNumber, nickname })
   return user
 }
+export const sendPasswordResetEmail = async (email) => {
+  await Auth.sendPasswordResetEmail(email)
+}
+
 const DB = firebase.firestore()
 export const createUser = async ({ email, phoneNumber, nickname }) => {
   const newUserRef = await DB.collection('users').doc()
@@ -26,41 +30,34 @@ export const createUser = async ({ email, phoneNumber, nickname }) => {
   return id
 }
 export const existEmail = async (email) => {
-  const ref = await DB.collection('users')
   let exist = false
-  await ref.get().then((res) => {
-    res.forEach((doc) => {
-      if (doc.data().email === email) {
-        exist = true
-        return
-      }
-    })
-  })
+  await DB.collection('users')
+    .where('email', '==', email)
+    .get()
+    .then((res) => (exist = !res.empty))
   return exist
 }
 export const existNickname = async (nickname) => {
-  const ref = await DB.collection('users')
   let exist = false
-  await ref.get().then((res) => {
-    res.forEach((doc) => {
-      if (doc.data().nickname === nickname) {
-        exist = true
-        return
-      }
-    })
-  })
+  await DB.collection('users')
+    .where('nickname', '==', nickname)
+    .get()
+    .then((res) => (exist = !res.empty))
   return exist
 }
 export const existPhoneNumber = async (phoneNumber) => {
-  const ref = await DB.collection('users')
   let exist = false
-  await ref.get().then((res) => {
-    res.forEach((doc) => {
-      if (doc.data().phoneNumber === phoneNumber) {
-        exist = true
-        return
-      }
-    })
-  })
+  await DB.collection('users')
+    .where('phoneNumber', '==', phoneNumber)
+    .get()
+    .then((res) => (exist = !res.empty))
   return exist
+}
+export const findEmailByPhoneNumber = async (phoneNumber) => {
+  let email = ''
+  await DB.collection('users')
+    .where('phoneNumber', '==', phoneNumber)
+    .get()
+    .then((qs) => (email = qs.docs[0].data().email))
+  return email
 }
