@@ -61,3 +61,48 @@ export const findEmailByPhoneNumber = async (phoneNumber) => {
     .then((qs) => (email = qs.docs[0].data().email))
   return email
 }
+
+export const findAllArticles = async ({
+  title,
+  content,
+  type,
+  createdAt,
+  userId,
+}) => {
+  const articles = []
+  let query = DB.collection('articles').orderBy('createdAt')
+  if (title) query = query.where('title', '==', title)
+  if (content) query = query.where('content', '==', content)
+  if (type) query = query.where('type', '==', type)
+  if (createdAt) query = query.where('createdAt', '==', createdAt)
+  if (userId) query = query.where('userRef', '==', '/users/' + userId)
+  const ref = await query.get()
+  const docs = ref.docs
+  for (let i = 0; i < docs.length; i++) {
+    const data = docs[i].data()
+    articles.push({
+      id: docs[i].id,
+      title: data.title,
+      content: data.content,
+      type: data.type,
+    })
+  }
+
+  return articles
+}
+
+export const searchBulletinArticles = async (line) => {
+  const articles = await findAllArticles({ type: 'BULLETIN' })
+  if (!line.trim()) return articles
+  const keywords = line.split(' ').map((w) => w.trim())
+  const filtered = articles.filter((a) => {
+    const title = a.title
+    const content = a.content
+    for (let i = 0; i < keywords.length; i++) {
+      if (title.includes(keywords[i]) || content.includes(keywords[i]))
+        return true
+    }
+    return false
+  })
+  return filtered
+}

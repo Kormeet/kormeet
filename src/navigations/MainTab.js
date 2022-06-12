@@ -1,25 +1,26 @@
-import React, { useContext } from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Image } from 'react-native';
-import { ThemeContext } from 'styled-components/native';
-import Logo from '../../assets/images/logo.png';
+import React, { useContext } from 'react'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { Image } from 'react-native'
+import { ThemeContext } from 'styled-components/native'
+import Logo from '../../assets/images/logo.png'
 import {
   MainPage,
   BulletinBoard,
   FleaMarket,
   JobSearch,
   MyInfo,
-} from '../screens';
+} from '../screens'
 
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator()
 
 export default function MainTab() {
-  const theme = useContext(ThemeContext);
+  const theme = useContext(ThemeContext)
   return (
     <Tab.Navigator
       screenOptions={{
         headerTitleAlign: 'center',
         cardStyle: { backgroundColor: theme.backgroundColor },
+        tabBarHideOnKeyboard: true,
         headerRight: () => (
           <Image
             source={Logo}
@@ -40,7 +41,7 @@ export default function MainTab() {
       <Tab.Screen
         name="BulletinBoard"
         component={BulletinBoard}
-        options={{ headerTitle: '게시판' }}
+        options={{ headerTitle: '게시판', unmountOnBlur: true }}
       />
       <Tab.Screen
         name="FleaMarket"
@@ -58,5 +59,5 @@ export default function MainTab() {
         options={{ headerTitle: '내 정보' }}
       />
     </Tab.Navigator>
-  );
+  )
 }
