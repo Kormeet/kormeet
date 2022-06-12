@@ -11,14 +11,16 @@ import {
   signup,
 } from '../utils/firebase'
 
-const MainContainer = styled.View`
-  flex: 1;
-  justify-content: center;
-  align-items: center;
+const MainContainer = styled.ScrollView`
+  margin: 0 auto;
+  width: 100%;
   background-color: ${({ theme }) => theme.background};
+  height: 100%;
+  padding-top: 20px;
 `
 
 const Container = styled.View`
+  margin: 0 auto;
   width: 80%;
 `
 
@@ -227,7 +229,7 @@ export default function Signup({ navigation }) {
   }
 
   return (
-    <MainContainer>
+    <MainContainer showsVerticalScrollIndicator={false}>
       <Container>
         <FormView>
           <StyledLabel>전화번호</StyledLabel>
@@ -284,7 +286,7 @@ export default function Signup({ navigation }) {
               isFilled
               width="20%"
               disabled={!email || idSuccess || !emailValid}
-              fontSize={'15px'}
+              fontSize={'13px'}
             />
           </RowContainer>
           <WarningText>{emailWT}</WarningText>
@@ -322,7 +324,7 @@ export default function Signup({ navigation }) {
               onPress={nicknameConfirmClicked}
               isFilled
               width="20%"
-              fontSize={'15px'}
+              fontSize={'13px'}
               disabled={!nickname || nicknameSuccess}
             />
           </RowContainer>
