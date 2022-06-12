@@ -1,22 +1,24 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components/native';
-import { theme } from '../theme';
+import React from 'react'
+import PropTypes from 'prop-types'
+import styled from 'styled-components/native'
+import { theme } from '../theme'
 
 const StyledPressable = styled.Pressable`
-  background-color: ${props =>
+  background-color: ${(props) =>
     props.isFilled ? theme.buttonBackground : 'transparent'};
   border-radius: 5px;
-  width: ${props => (props.width ? props.width : 'auto')};
+  width: ${(props) => (props.width ? props.width : 'auto')};
   padding: 5px 5px;
-  opacity: ${props => (props.disabled ? 0.5 : 1)};
-  margin: ${props => (props.smargin ? props.smargin : '0')};
-`;
+  opacity: ${(props) => (props.disabled ? 0.5 : 1)};
+  margin: ${(props) => (props.smargin ? props.smargin : '0')};
+  justify-content: center;
+  align-items: center;
+`
 const StyledText = styled.Text`
   text-align: center;
-  color: ${props => (props.isFilled ? 'white' : theme.buttonBackground)};
-  font-size: ${props => (props.fontSize ? props.fontSize : '20px')};
-`;
+  color: ${(props) => (props.isFilled ? 'white' : theme.buttonBackground)};
+  font-size: ${(props) => (props.fontSize ? props.fontSize : '20px')};
+`
 
 export default function BasicButton({
   title,
@@ -39,7 +41,7 @@ export default function BasicButton({
         {title}
       </StyledText>
     </StyledPressable>
-  );
+  )
 }
 
 BasicButton.propTypes = {
@@ -50,4 +52,4 @@ BasicButton.propTypes = {
   width: PropTypes.string,
   smargin: PropTypes.string,
   disabled: PropTypes.bool,
-};
+}
