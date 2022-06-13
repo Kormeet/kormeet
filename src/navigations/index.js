@@ -7,11 +7,11 @@ import MainStack from './MainStack'
 
 export default function Navigation() {
   const { inProgress } = useContext(ProgressContext)
-  const { user } = useContext(UserContext)
+  const { isLoggedIn } = useContext(UserContext)
 
   return (
     <NavigationContainer>
-      {user?.id && user?.email ? <MainStack /> : <AuthStack />}
+      {isLoggedIn() ? <MainStack /> : <AuthStack />}
       {inProgress && <Spinner />}
     </NavigationContainer>
   )
