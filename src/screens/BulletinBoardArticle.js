@@ -1,13 +1,17 @@
 import React, { useContext, useEffect, useLayoutEffect, useState } from 'react'
-import { Dimensions } from 'react-native'
 import styled from 'styled-components/native'
-import PropTypes from 'prop-types'
 import BasicButton from '../components/BasicButton'
 import BasicTextInput from '../components/BasicTextInput'
 import Article from '../components/Article'
 import Comment from '../components/Comment'
-import { findAllReplies, findArticleById } from '../utils/firebase'
+import {
+  createReply,
+  deleteReply,
+  findAllReplies,
+  findArticleById,
+} from '../utils/firebase'
 import { ProgressContext, UserContext } from '../contexts'
+import { Alert } from 'react-native'
 
 const MainContainer = styled.View`
   align-items: center;
@@ -63,9 +67,7 @@ export default function BulletinBoardArticle({ navigation, route }) {
     setArticle(await findArticleById(articleId))
   }
   const loadReplies = async () => {
-    const _replies = await findAllReplies({ articleId })
-    console.log(_replies)
-    setReplies(_replies)
+    setReplies(await findAllReplies({ articleId }))
   }
   const loadData = async () => {
     setLoading(true)
@@ -78,6 +80,24 @@ export default function BulletinBoardArticle({ navigation, route }) {
   useEffect(() => {
     loadData()
   }, [])
+  const onDeleteClicked = (id) => async () => {
+    spinner.start()
+    await deleteReply(id)
+    await loadReplies()
+    Alert.alert('댓글 삭제', '댓글을 삭제하였습니다.')
+    spinner.stop()
+  }
+
+  const onCommentSubmit = async () => {
+    await createReply({
+      content: comment,
+      articleId,
+      userId: user.id,
+      createdAt: new Date(),
+    })
+    loadReplies()
+    setComment('')
+  }
 
   return (
     <MainContainer>
@@ -86,7 +106,7 @@ export default function BulletinBoardArticle({ navigation, route }) {
           <ArticleContainer>
             <Article
               title={article.title}
-              nickname={'nick'}
+              nickname={article.user.nickname}
               content={article.content}
             />
             <ButtonView>
@@ -102,9 +122,11 @@ export default function BulletinBoardArticle({ navigation, route }) {
           <CommentList>
             {replies.map((reply) => (
               <Comment
+                key={reply.id}
                 nickname={reply.user.nickname}
                 content={reply.content}
                 isMine={reply.user.email === user.email ? true : false}
+                onDeleteClicked={onDeleteClicked(reply.id)}
               />
             ))}
           </CommentList>
@@ -119,10 +141,14 @@ export default function BulletinBoardArticle({ navigation, route }) {
           value={comment}
           multiline
         />
-        <BasicButton title="등록" isFilled fontSize="20px" width={'20%'} />
+        <BasicButton
+          title="등록"
+          isFilled
+          fontSize="20px"
+          width={'20%'}
+          onPress={onCommentSubmit}
+        />
       </PostComment>
     </MainContainer>
   )
 }
-
-BulletinBoardArticle.propTypes = {}
