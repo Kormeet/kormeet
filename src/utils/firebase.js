@@ -89,6 +89,12 @@ const convertDocToArticle = async (doc) => {
   const data = doc.data()
   const userSS = await data.userRef.get()
   const user = userSS.data()
+  // const replies = await findAllReplies({ articleId: doc.id })
+  const repliesCount = (
+    await DB.collection('replies')
+      .where('articleRef', '==', await DB.collection('articles').doc(doc.id))
+      .get()
+  ).size
   return {
     id: doc.id,
     title: data.title,
@@ -99,6 +105,7 @@ const convertDocToArticle = async (doc) => {
       nickname: user.nickname ? user.nickname : user.email,
       email: user.email,
     },
+    repliesCount,
   }
 }
 const convertDocsToArticles = async (docs) => {
@@ -120,7 +127,12 @@ export const findAllArticles = async ({
   if (content) query = query.where('content', '==', content)
   if (type) query = query.where('type', '==', type)
   if (createdAt) query = query.where('createdAt', '==', createdAt)
-  if (userId) query = query.where('userRef', '==', '/users/' + userId)
+  if (userId)
+    query = query.where(
+      'userRef',
+      '==',
+      await DB.collection('users').doc(articleId)
+    )
   return convertDocsToArticles((await query.get()).docs)
 }
 
