@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components/native';
 import BasicButton from '../components/BasicButton';
-import BasicTextInput from '../components/BasicTextInput';
 
 const MainContainer = styled.View`
   flex: 1;
@@ -30,6 +29,11 @@ const StyledLabel = styled.Text`
 
 export default function MyInfo({ navigation }) {
   const nickname = '(임시)한별짱짱123';
+
+  const logout = () => {
+    console.log('로그아웃 기능 구현!!');
+  };
+
   return (
     <MainContainer>
       <Container>
@@ -51,11 +55,14 @@ export default function MyInfo({ navigation }) {
           <StyledLabel>최근 구인구직</StyledLabel>
           <StyledLabel>(임시) 최근 구인구직이 없습니다</StyledLabel>
         </FormView>
-        <BasicButton
-          title="개인 정보 변경"
-          onPress={() => navigation.navigate('ConfirmPw')}
-          isFilled
-        />
+        <RowContainer>
+          <BasicButton
+            title="개인 정보 변경"
+            onPress={() => navigation.navigate('ConfirmPw')}
+            isFilled
+          />
+          <BasicButton title="로그아웃" onPress={logout} isFilled />
+        </RowContainer>
       </Container>
     </MainContainer>
   );
