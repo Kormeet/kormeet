@@ -8,6 +8,11 @@ import BulletinBoardImg from '../../assets/images/bulletinBoard.png';
 import FleaMarketImg from '../../assets/images/fleaMarket.png';
 import JobSearchImg from '../../assets/images/jobSearch.png';
 import MyInfoImg from '../../assets/images/myInfo.png';
+import MainPageSelectedImg from '../../assets/images/mainPageSelected.png';
+import BulletinBoardSelectedImg from '../../assets/images/bulletinBoardSelected.png';
+import FleaMarketSelectedImg from '../../assets/images/fleaMarketSelected.png';
+import JobSearchSelectedImg from '../../assets/images/jobSearchSelected.png';
+import MyInfoSelectedImg from '../../assets/images/myInfoSelected.png';
 import {
   MainPage,
   BulletinBoard,
@@ -44,11 +49,11 @@ export default function MainTab() {
         component={MainPage}
         options={{
           headerTitle: '메인 페이지',
-          tabBarIcon: () => (
+          tabBarIcon: ({ focused }) => (
             <Image
-              source={MainPageImg}
+              source={focused ? MainPageSelectedImg : MainPageImg}
               style={{
-                width: 40,
+                width: 30,
                 resizeMode: 'contain',
                 marginRight: 11,
               }}
@@ -62,11 +67,11 @@ export default function MainTab() {
         options={{
           headerTitle: '게시판',
           unmountOnBlur: true,
-          tabBarIcon: () => (
+          tabBarIcon: ({ focused }) => (
             <Image
-              source={BulletinBoardImg}
+              source={focused ? BulletinBoardSelectedImg : BulletinBoardImg}
               style={{
-                width: 40,
+                width: 30,
                 resizeMode: 'contain',
                 marginRight: 11,
               }}
@@ -79,11 +84,11 @@ export default function MainTab() {
         component={FleaMarket}
         options={{
           headerTitle: '중고장터',
-          tabBarIcon: () => (
+          tabBarIcon: ({ focused }) => (
             <Image
-              source={FleaMarketImg}
+              source={focused ? FleaMarketSelectedImg : FleaMarketImg}
               style={{
-                width: 40,
+                width: 30,
                 resizeMode: 'contain',
                 marginRight: 11,
               }}
@@ -96,11 +101,11 @@ export default function MainTab() {
         component={JobSearch}
         options={{
           headerTitle: '구인구직',
-          tabBarIcon: () => (
+          tabBarIcon: ({ focused }) => (
             <Image
-              source={JobSearchImg}
+              source={focused ? JobSearchSelectedImg : JobSearchImg}
               style={{
-                width: 40,
+                width: 30,
                 resizeMode: 'contain',
                 marginRight: 11,
               }}
@@ -113,11 +118,11 @@ export default function MainTab() {
         component={MyInfo}
         options={{
           headerTitle: '내 정보',
-          tabBarIcon: () => (
+          tabBarIcon: ({ focused }) => (
             <Image
-              source={MyInfoImg}
+              source={focused ? MyInfoSelectedImg : MyInfoImg}
               style={{
-                width: 40,
+                width: 30,
                 resizeMode: 'contain',
                 marginRight: 11,
               }}
