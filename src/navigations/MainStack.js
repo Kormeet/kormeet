@@ -1,15 +1,16 @@
-import { createStackNavigator } from '@react-navigation/stack';
-import React, { useContext } from 'react';
-import { Image } from 'react-native';
-import { ThemeContext } from 'styled-components';
-import MainTab from './MainTab';
-import Logo from '../../assets/images/logo.png';
-import { ConfirmPw, ChangeInfo, BulletinBoardArticle } from '../screens';
+import { createStackNavigator } from '@react-navigation/stack'
+import React, { useContext } from 'react'
+import { Image } from 'react-native'
+import { ThemeContext } from 'styled-components'
+import MainTab from './MainTab'
+import Logo from '../../assets/images/logo.png'
+import { ConfirmPw, ChangeInfo, BulletinBoardArticle } from '../screens'
+import ArticleScreen from '../screens/ArticleScreen'
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator()
 
 export default function MainStack() {
-  const theme = useContext(ThemeContext);
+  const theme = useContext(ThemeContext)
   return (
     <Stack.Navigator
       initialRouteName="Main"
@@ -45,9 +46,19 @@ export default function MainStack() {
       />
       <Stack.Screen
         name="BulletinBoardArticle"
-        component={BulletinBoardArticle}
+        component={ArticleScreen}
         options={{ headerTitle: '자유게시판 게시글' }}
       />
+      <Stack.Screen
+        name="FleaMarketArticle"
+        component={ArticleScreen}
+        options={{ headerTitle: '중고장터 게시글' }}
+      />
+      <Stack.Screen
+        name="JobSearchArticle"
+        component={ArticleScreen}
+        options={{ headerTitle: '구인구직 게시글' }}
+      />
     </Stack.Navigator>
-  );
+  )
 }
