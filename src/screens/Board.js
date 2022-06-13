@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Dimensions } from 'react-native'
+import { Dimensions, Text } from 'react-native'
 import styled from 'styled-components/native'
 import BasicButton from '../components/BasicButton'
 import BasicTextInput from '../components/BasicTextInput'
@@ -32,16 +32,35 @@ const ButtonView = styled.View`
   align-items: flex-end;
 `
 
-export default function BulletinBoard({ navigation }) {
-  // Context
+const EmptyView = styled.View`
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  margin-top: 30px;
+`
+
+export default function Board({ navigation, route }) {
+  // contexts
   const { spinner } = useContext(ProgressContext)
 
-  // 필드 값
+  // params
+  const { articleType } = route.params
+
+  // states
   const [search, setSearch] = useState('')
   const [articles, setArticles] = useState([])
+  const [isEmpty, setIsEmpty] = useState(true)
+  const [loadingMessage, setLoadingMessage] = useState('loading...')
   const loadArticles = async () => {
     spinner.start()
-    setArticles(await findAllArticles({}))
+    setLoadingMessage('loading...')
+    const _articles = await findAllArticles({ type: articleType })
+    setArticles(_articles)
+    if (_articles.length > 0) setIsEmpty(false)
+    else {
+      setLoadingMessage('게시물이 없습니다.')
+      setIsEmpty(true)
+    }
     spinner.stop()
   }
   useEffect(() => {
@@ -64,22 +83,27 @@ export default function BulletinBoard({ navigation }) {
           smargin="30px 0 0 0"
           onSubmitEditing={searchArticle}
         />
-
-        <List showsVerticalScrollIndicator={false}>
-          {articles.map((article) => (
-            <ArticleButton
-              key={article.id}
-              title={article.title}
-              content={article.content}
-              reply={1}
-              onPress={() => {
-                navigation.navigate('BulletinBoardArticle', {
-                  articleId: article.id,
-                })
-              }}
-            />
-          ))}
-        </List>
+        {isEmpty ? (
+          <EmptyView>
+            <Text>{loadingMessage}</Text>
+          </EmptyView>
+        ) : (
+          <List showsVerticalScrollIndicator={false}>
+            {articles.map((article) => (
+              <ArticleButton
+                key={article.id}
+                title={article.title}
+                content={article.content}
+                reply={1}
+                onPress={() => {
+                  navigation.navigate('BulletinBoardArticle', {
+                    articleId: article.id,
+                  })
+                }}
+              />
+            ))}
+          </List>
+        )}
       </Container>
       <ButtonView>
         <BasicButton
@@ -90,7 +114,7 @@ export default function BulletinBoard({ navigation }) {
           width="100px"
           isFilled
           fontSize="15px"
-        ></BasicButton>
+        />
       </ButtonView>
     </MainContainer>
   )

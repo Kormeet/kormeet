@@ -50,7 +50,7 @@ export default function Comment({
 }
 
 Content.propTypes = {
-  nickname: PropTypes.string.isRequired,
-  content: PropTypes.string.isRequired,
+  nickname: PropTypes.string,
+  content: PropTypes.string,
   isMine: PropTypes.bool,
 }

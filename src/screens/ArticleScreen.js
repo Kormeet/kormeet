@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useLayoutEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components/native'
 import BasicButton from '../components/BasicButton'
 import BasicTextInput from '../components/BasicTextInput'
@@ -49,12 +49,13 @@ const ButtonView = styled.View`
   margin-top: 10px;
 `
 
-export default function BulletinBoardArticle({ navigation, route }) {
+export default function ArticleScreen({ navigation, route }) {
   // contexts
   const { spinner } = useContext(ProgressContext)
   const { user } = useContext(UserContext)
 
-  // navigation params
+  // params
+  const { articleType } = route.params
   const { articleId } = route.params
 
   // states
@@ -62,6 +63,9 @@ export default function BulletinBoardArticle({ navigation, route }) {
   const [article, setArticle] = useState({})
   const [replies, setReplies] = useState([])
   const [loading, setLoading] = useState(true)
+
+  // refs
+  const replyRef = useRef()
 
   const loadArticle = async () => {
     setArticle(await findArticleById(articleId))
@@ -97,6 +101,7 @@ export default function BulletinBoardArticle({ navigation, route }) {
     })
     loadReplies()
     setComment('')
+    replyRef.current.blur()
   }
 
   return (
@@ -140,6 +145,7 @@ export default function BulletinBoardArticle({ navigation, route }) {
           width="80%"
           value={comment}
           multiline
+          inputRef={replyRef}
         />
         <BasicButton
           title="등록"
