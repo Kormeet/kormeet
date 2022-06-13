@@ -66,14 +66,16 @@ export default function BulletinBoard({ navigation }) {
         />
 
         <List showsVerticalScrollIndicator={false}>
-          {articles.map((article, index) => (
+          {articles.map((article) => (
             <ArticleButton
-              key={index}
+              key={article.id}
               title={article.title}
               content={article.content}
               reply={1}
               onPress={() => {
-                navigation.navigate('BulletinBoardArticle')
+                navigation.navigate('BulletinBoardArticle', {
+                  articleId: article.id,
+                })
               }}
             />
           ))}

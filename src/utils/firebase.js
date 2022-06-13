@@ -70,7 +70,7 @@ export const findAllArticles = async ({
   userId,
 }) => {
   const articles = []
-  let query = DB.collection('articles').orderBy('createdAt')
+  let query = DB.collection('articles').orderBy('createdAt', 'desc')
   if (title) query = query.where('title', '==', title)
   if (content) query = query.where('content', '==', content)
   if (type) query = query.where('type', '==', type)
@@ -105,4 +105,37 @@ export const searchBulletinArticles = async (line) => {
     return false
   })
   return filtered
+}
+
+export const findArticleById = async (id) => {
+  return (await DB.collection('articles').doc(id).get()).data()
+}
+
+export const findAllReplies = async ({ articleId }) => {
+  let query = DB.collection('replies').orderBy('createdAt')
+  if (articleId)
+    query = query.where(
+      'articleRef',
+      '==',
+      await DB.collection('articles').doc(articleId)
+    )
+  const ref = await query.get()
+  const docs = ref.docs
+  const replies = []
+  for (let i = 0; i < docs.length; i++) {
+    const data = docs[i].data()
+    const userSS = await data.userRef.get()
+    const user = userSS.data()
+    replies.push({
+      id: docs[i].id,
+      content: data.content,
+      createdAt: data.createdAt,
+      user: {
+        id: userSS.id,
+        nickname: user.nickname ? user.nickname : user.email,
+        email: user.email,
+      },
+    })
+  }
+  return replies
 }
