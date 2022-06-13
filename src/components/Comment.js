@@ -29,7 +29,7 @@ export default function Comment({ nickname, content, isMine }) {
         <Nickname isMine>{nickname}</Nickname>
         <Content>ㄴ{content}</Content>
       </ContentView>
-      <BasicButton title="수정" fontSize="20px" isFilled></BasicButton>
+      <BasicButton title="삭제" fontSize="20px" isFilled></BasicButton>
     </Container>
   ) : (
     <ContentView>

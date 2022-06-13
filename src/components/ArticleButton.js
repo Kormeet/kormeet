@@ -1,6 +1,8 @@
 import React from 'react';
+import { Image } from 'react-native';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/native';
+import commentImg from '../../assets/images/comment.png';
 import { theme } from '../theme';
 
 const StyledPressable = styled.Pressable`
@@ -16,6 +18,10 @@ const StyledPressable = styled.Pressable`
 const TextContainer = styled.View`
   flex-direction: column;
   align-items: flex-start;
+`;
+
+const ReplyContainer = styled.View`
+  flex-direction: row;
 `;
 
 const Title = styled.Text`
@@ -42,7 +48,19 @@ export default function ArticleButton({ title, content, reply, onPress }) {
         <Title>{title}</Title>
         <Content>{content}</Content>
       </TextContainer>
-      <Reply>{reply}</Reply>
+      <ReplyContainer>
+        <Image
+          source={commentImg}
+          style={{
+            width: 10,
+            height: 10,
+            resizeMode: 'contain',
+            marginTop: 3,
+            marginRight: 5,
+          }}
+        />
+        <Reply>{reply}</Reply>
+      </ReplyContainer>
     </StyledPressable>
   );
 }
