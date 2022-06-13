@@ -40,7 +40,6 @@ export default function Login({ navigation }) {
       const email = id.trim()
       const password = pw.trim()
       const user = await login({ email, password })
-      console.log(user)
       dispatch({
         email: user.email,
         id: user.id,
