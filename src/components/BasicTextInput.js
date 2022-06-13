@@ -22,6 +22,7 @@ export default function BasicTextInput({
   keyboardType,
   secureTextEntry,
   onSubmitEditing,
+  multiline,
 }) {
   return (
     <StyledTextInput
@@ -35,6 +36,7 @@ export default function BasicTextInput({
       keyboardType={keyboardType}
       secureTextEntry={secureTextEntry}
       onSubmitEditing={onSubmitEditing}
+      multiline={multiline}
     />
   )
 }
@@ -50,4 +52,5 @@ BasicTextInput.propTypes = {
   keyboardType: PropTypes.string,
   secureTextEntry: PropTypes.bool,
   onSubmitEditing: PropTypes.func,
+  multiline: PropTypes.bool,
 }
