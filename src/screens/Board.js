@@ -110,6 +110,7 @@ export default function Board({ navigation, route }) {
           title="게시글 작성"
           onPress={() => {
             console.log('게시글 작성 화면으로!!')
+            navigation.navigate('BulletinBoardWrite')
           }}
           width="100px"
           isFilled
