@@ -55,7 +55,6 @@ export default function ArticleScreen({ navigation, route }) {
   const { user } = useContext(UserContext)
 
   // params
-  const { articleType } = route.params
   const { articleId } = route.params
 
   // states
