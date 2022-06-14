@@ -115,6 +115,16 @@ const convertDocsToArticles = async (docs) => {
   return articles
 }
 
+export const createArticle = async ({ title, content, type, userId }) => {
+  await DB.collection('articles').add({
+    title,
+    content,
+    type,
+    createdAt: firebase.firestore.Timestamp.fromDate(new Date()),
+    userRef: await DB.collection('users').doc(userId),
+  })
+}
+
 export const findAllArticles = async ({
   title,
   content,
