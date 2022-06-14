@@ -9,7 +9,7 @@ const StyledTextInput = styled.TextInput`
   width: ${(props) => (props.width ? props.width : 'auto')};
   margin: ${(props) => (props.smargin ? props.smargin : '0')};
   padding: 5px;
-  height: ${(props) =>(props.height ? props.height : 'auto')};
+  height: ${(props) => (props.height ? props.height : 'auto')};
 `
 
 export default function BasicTextInput({
@@ -42,6 +42,7 @@ export default function BasicTextInput({
       multiline={multiline}
       ref={inputRef}
       height={height}
+      textAlignVertical={'top'}
     />
   )
 }
