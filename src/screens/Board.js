@@ -94,7 +94,7 @@ export default function Board({ navigation, route }) {
                 key={article.id}
                 title={article.title}
                 content={article.content}
-                reply={1}
+                reply={article.repliesCount}
                 onPress={() => {
                   navigation.navigate('BulletinBoardArticle', {
                     articleId: article.id,
