@@ -37,7 +37,6 @@ export default function MainTab() {
             }}
           />
         ),
-        unmountOnBlur: true,
       }}
     >
       <Tab.Screen
