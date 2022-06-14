@@ -1,13 +1,15 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Dimensions, Text } from 'react-native'
+import { Dimensions, Image, Pressable, Text } from 'react-native'
 import styled from 'styled-components/native'
 import BasicButton from '../components/BasicButton'
 import BasicTextInput from '../components/BasicTextInput'
 import ArticleButton from '../components/ArticleButton'
 import { findAllArticles, searchBulletinArticles } from '../utils/firebase'
 import { ProgressContext } from '../contexts'
+import Refresh from '../../assets/images/refresh.png'
 
 const windowHeight = Dimensions.get('window').height
+const windowWidth = Dimensions.get('window').width
 
 const MainContainer = styled.View`
   align-items: center;
@@ -28,8 +30,9 @@ const List = styled.ScrollView`
 
 const ButtonView = styled.View`
   position: absolute;
+  flex-direction: row;
   bottom: 25px;
-  align-items: flex-end;
+  align-items: center;
 `
 
 const EmptyView = styled.View`
@@ -37,6 +40,16 @@ const EmptyView = styled.View`
   height: 100%;
   align-items: center;
   margin-top: 30px;
+`
+
+const ImageButton = styled.Pressable`
+  position: absolute;
+  left: ${windowWidth / 2 - 50 - 20}px;
+`
+
+const StyledImage = styled.Image`
+  tint-color: ${({ theme }) => theme.buttonBackground};
+  width: 40px;
 `
 
 export default function Board({ navigation, route }) {
@@ -49,23 +62,33 @@ export default function Board({ navigation, route }) {
   // states
   const [search, setSearch] = useState('')
   const [articles, setArticles] = useState([])
-  const [isEmpty, setIsEmpty] = useState(true)
-  const [loadingMessage, setLoadingMessage] = useState('loading...')
+  const [isLoading, setIsLoading] = useState(true)
+  const [isEmpty, setIsEmpty] = useState(false)
+
   const loadArticles = async () => {
+    setArticles(await findAllArticles({ type: articleType }))
+  }
+  const rerenderScreen = async () => {
     spinner.start()
-    setLoadingMessage('loading...')
-    const _articles = await findAllArticles({ type: articleType })
-    setArticles(_articles)
-    if (_articles.length > 0) setIsEmpty(false)
-    else {
-      setLoadingMessage('게시물이 없습니다.')
-      setIsEmpty(true)
-    }
+    await loadArticles()
     spinner.stop()
   }
+  const renderFirst = async () => {
+    setIsLoading(true)
+    await rerenderScreen()
+    setIsLoading(false)
+  }
+
   useEffect(() => {
-    loadArticles()
+    renderFirst()
   }, [])
+  useEffect(() => {
+    if (articles.length > 0) setIsEmpty(false)
+    else setIsEmpty(true)
+  }, [articles])
+  useEffect(() => {
+    return navigation.addListener('focus', loadArticles)
+  }, [navigation])
 
   const searchArticle = async () => {
     spinner.start()
@@ -83,18 +106,27 @@ export default function Board({ navigation, route }) {
           smargin="30px 0 0 0"
           onSubmitEditing={searchArticle}
         />
-        {isEmpty ? (
+        {isLoading && (
           <EmptyView>
-            <Text>{loadingMessage}</Text>
+            <Text>{'loading...'}</Text>
           </EmptyView>
-        ) : (
-          <List showsVerticalScrollIndicator={false}>
+        )}
+        {isEmpty && (
+          <EmptyView>
+            <Text>{'게시물이 없습니다.'}</Text>
+          </EmptyView>
+        )}
+        {!isLoading && !isEmpty && (
+          <List
+            showsVerticalScrollIndicator={false}
+            onScrollToTop={rerenderScreen}
+          >
             {articles.map((article) => (
               <ArticleButton
                 key={article.id}
                 title={article.title}
                 content={article.content}
-                reply={1}
+                reply={article.repliesCount}
                 onPress={() => {
                   navigation.navigate('BulletinBoardArticle', {
                     articleId: article.id,
@@ -109,13 +141,17 @@ export default function Board({ navigation, route }) {
         <BasicButton
           title="게시글 작성"
           onPress={() => {
-            console.log('게시글 작성 화면으로!!')
-            navigation.navigate('BulletinBoardWrite')
+            navigation.navigate('BulletinBoardWrite', {
+              articleType,
+            })
           }}
           width="100px"
           isFilled
           fontSize="15px"
         />
+        <ImageButton onPress={rerenderScreen}>
+          <StyledImage source={Refresh} resizeMode={'contain'} />
+        </ImageButton>
       </ButtonView>
     </MainContainer>
   )
