@@ -50,10 +50,12 @@ export default function ConfirmPw({ navigation }) {
     if (pw === '123456') {
       // 임시로 123456
       Alert.alert('인증 성공.');
+      console.log('(미구현) 접속한 비밀번호 확인 기능 X');
       setPasswordWT('');
       setPwSuccess(true);
     } else {
       setPasswordWT('비밀번호가 일치하지 않습니다.');
+      console.log('(미구현) 접속한 비밀번호 확인 기능 X');
     }
   };
 
