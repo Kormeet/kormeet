@@ -42,7 +42,7 @@ export default function Login({ navigation }) {
       const user = await login({ email, password })
       dispatch({
         email: user.email,
-        uid: user.uid,
+        id: user.id,
         nickname: user.nickname,
       })
     } catch (e) {

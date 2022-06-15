@@ -1,38 +1,41 @@
-import React from 'react';
-import styled from 'styled-components/native';
-import BasicButton from '../components/BasicButton';
+import React, { useContext } from 'react'
+import styled from 'styled-components/native'
+import BasicButton from '../components/BasicButton'
+import { UserContext } from '../contexts'
+import { logout } from '../utils/firebase'
 
 const MainContainer = styled.View`
   flex: 1;
   justify-content: center;
   align-items: center;
   background-color: ${({ theme }) => theme.background};
-`;
+`
 
 const Container = styled.View`
   width: 80%;
-`;
+`
 
 const FormView = styled.View`
   margin: 0 0 20px 0;
-`;
+`
 
 const RowContainer = styled.View`
   flex-direction: row;
   justify-content: space-between;
   margin: 0 0 5px 0;
-`;
+`
 
 const StyledLabel = styled.Text`
   font-size: 20px;
-`;
+`
 
 export default function MyInfo({ navigation }) {
-  const nickname = '(임시)한별짱짱123';
+  const { user, dispatch } = useContext(UserContext)
 
-  const logout = () => {
-    console.log('로그아웃 기능 구현!!');
-  };
+  const onLogoutClicked = () => {
+    logout()
+    dispatch({})
+  }
 
   return (
     <MainContainer>
@@ -40,7 +43,7 @@ export default function MyInfo({ navigation }) {
         <FormView>
           <RowContainer>
             <StyledLabel>닉네임</StyledLabel>
-            <StyledLabel>{nickname}</StyledLabel>
+            <StyledLabel>{user.nickname}</StyledLabel>
           </RowContainer>
         </FormView>
         <FormView>
@@ -61,9 +64,9 @@ export default function MyInfo({ navigation }) {
             onPress={() => navigation.navigate('ConfirmPw')}
             isFilled
           />
-          <BasicButton title="로그아웃" onPress={logout} isFilled />
+          <BasicButton title="로그아웃" onPress={onLogoutClicked} isFilled />
         </RowContainer>
       </Container>
     </MainContainer>
-  );
+  )
 }
