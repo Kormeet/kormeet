@@ -9,6 +9,7 @@ const StyledTextInput = styled.TextInput`
   width: ${(props) => (props.width ? props.width : 'auto')};
   margin: ${(props) => (props.smargin ? props.smargin : '0')};
   padding: 5px;
+  height: ${(props) => (props.height ? props.height : 'auto')};
 `
 
 export default function BasicTextInput({
@@ -23,6 +24,8 @@ export default function BasicTextInput({
   secureTextEntry,
   onSubmitEditing,
   multiline,
+  inputRef,
+  height,
 }) {
   return (
     <StyledTextInput
@@ -37,6 +40,9 @@ export default function BasicTextInput({
       secureTextEntry={secureTextEntry}
       onSubmitEditing={onSubmitEditing}
       multiline={multiline}
+      ref={inputRef}
+      height={height}
+      textAlignVertical={'top'}
     />
   )
 }
@@ -53,4 +59,6 @@ BasicTextInput.propTypes = {
   secureTextEntry: PropTypes.bool,
   onSubmitEditing: PropTypes.func,
   multiline: PropTypes.bool,
+  inputRef: PropTypes.object,
+  height: PropTypes.string,
 }

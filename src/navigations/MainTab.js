@@ -1,30 +1,25 @@
-import React, { useContext } from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Image } from 'react-native';
-import { ThemeContext } from 'styled-components/native';
-import LogoImg from '../../assets/images/logo.png';
-import MainPageImg from '../../assets/images/mainPage.png';
-import BulletinBoardImg from '../../assets/images/bulletinBoard.png';
-import FleaMarketImg from '../../assets/images/fleaMarket.png';
-import JobSearchImg from '../../assets/images/jobSearch.png';
-import MyInfoImg from '../../assets/images/myInfo.png';
-import MainPageSelectedImg from '../../assets/images/mainPageSelected.png';
-import BulletinBoardSelectedImg from '../../assets/images/bulletinBoardSelected.png';
-import FleaMarketSelectedImg from '../../assets/images/fleaMarketSelected.png';
-import JobSearchSelectedImg from '../../assets/images/jobSearchSelected.png';
-import MyInfoSelectedImg from '../../assets/images/myInfoSelected.png';
-import {
-  MainPage,
-  BulletinBoard,
-  FleaMarket,
-  JobSearch,
-  MyInfo,
-} from '../screens';
+import React, { useContext } from 'react'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { Image } from 'react-native'
+import { ThemeContext } from 'styled-components/native'
+import LogoImg from '../../assets/images/logo.png'
+import MainPageImg from '../../assets/images/mainPage.png'
+import BulletinBoardImg from '../../assets/images/bulletinBoard.png'
+import FleaMarketImg from '../../assets/images/fleaMarket.png'
+import JobSearchImg from '../../assets/images/jobSearch.png'
+import MyInfoImg from '../../assets/images/myInfo.png'
+import MainPageSelectedImg from '../../assets/images/mainPageSelected.png'
+import BulletinBoardSelectedImg from '../../assets/images/bulletinBoardSelected.png'
+import FleaMarketSelectedImg from '../../assets/images/fleaMarketSelected.png'
+import JobSearchSelectedImg from '../../assets/images/jobSearchSelected.png'
+import MyInfoSelectedImg from '../../assets/images/myInfoSelected.png'
+import { MainPage, MyInfo } from '../screens'
+import Board from '../screens/Board'
 
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator()
 
 export default function MainTab() {
-  const theme = useContext(ThemeContext);
+  const theme = useContext(ThemeContext)
   return (
     <Tab.Navigator
       screenOptions={{
@@ -63,10 +58,10 @@ export default function MainTab() {
       />
       <Tab.Screen
         name="BulletinBoard"
-        component={BulletinBoard}
+        component={Board}
+        initialParams={{ articleType: 'BULLETIN' }}
         options={{
           headerTitle: '게시판',
-          unmountOnBlur: true,
           tabBarIcon: ({ focused }) => (
             <Image
               source={focused ? BulletinBoardSelectedImg : BulletinBoardImg}
@@ -81,7 +76,8 @@ export default function MainTab() {
       />
       <Tab.Screen
         name="FleaMarket"
-        component={FleaMarket}
+        component={Board}
+        initialParams={{ articleType: 'FLEA_MARKET' }}
         options={{
           headerTitle: '중고장터',
           tabBarIcon: ({ focused }) => (
@@ -98,7 +94,8 @@ export default function MainTab() {
       />
       <Tab.Screen
         name="JobSearch"
-        component={JobSearch}
+        component={Board}
+        initialParams={{ articleType: 'JOB_SEARCH' }}
         options={{
           headerTitle: '구인구직',
           tabBarIcon: ({ focused }) => (
@@ -131,5 +128,5 @@ export default function MainTab() {
         }}
       />
     </Tab.Navigator>
-  );
+  )
 }

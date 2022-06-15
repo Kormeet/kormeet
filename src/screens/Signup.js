@@ -220,7 +220,7 @@ export default function Signup({ navigation }) {
       Alert.alert(
         `${nickname ? nickname : _email}님! 회원가입이 완료되었습니다. `
       )
-      dispatch({ email: user.email, uid: user.uid, nickname: user.nickname })
+      dispatch({ email: user.email, id: user.id, nickname: user.nickname })
     } catch (e) {
       Alert.alert('SignUp Error', e.message)
     } finally {
