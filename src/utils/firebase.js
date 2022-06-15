@@ -132,6 +132,7 @@ export const findAllArticles = async ({
   type,
   createdAt,
   userId,
+  limit,
 }) => {
   let query = DB.collection('articles').orderBy('createdAt', 'desc')
   if (title) query = query.where('title', '==', title)
@@ -144,6 +145,7 @@ export const findAllArticles = async ({
       '==',
       await DB.collection('users').doc(articleId)
     )
+  if (limit) query = query.limit(limit)
   return convertDocsToArticles((await query.get()).docs)
 }
 
