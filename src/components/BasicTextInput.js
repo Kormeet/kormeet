@@ -26,6 +26,7 @@ export default function BasicTextInput({
   multiline,
   inputRef,
   height,
+  onContentSizeChange,
 }) {
   return (
     <StyledTextInput
@@ -43,6 +44,7 @@ export default function BasicTextInput({
       ref={inputRef}
       height={height}
       textAlignVertical={'top'}
+      onContentSizeChange={onContentSizeChange}
     />
   )
 }
@@ -61,4 +63,5 @@ BasicTextInput.propTypes = {
   multiline: PropTypes.bool,
   inputRef: PropTypes.object,
   height: PropTypes.string,
+  onContentSizeChange: PropTypes.func,
 }

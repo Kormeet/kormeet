@@ -59,7 +59,11 @@ export default function MainTab() {
       <Tab.Screen
         name="BulletinBoard"
         component={Board}
-        initialParams={{ articleType: 'BULLETIN' }}
+        initialParams={{
+          articleType: 'BULLETIN',
+          writeScreen: 'BulletinBoardWrite',
+          articleScreen: 'BulletinBoardArticle',
+        }}
         options={{
           headerTitle: '게시판',
           tabBarIcon: ({ focused }) => (
@@ -77,7 +81,11 @@ export default function MainTab() {
       <Tab.Screen
         name="FleaMarket"
         component={Board}
-        initialParams={{ articleType: 'FLEA_MARKET' }}
+        initialParams={{
+          articleType: 'FLEA_MARKET',
+          writeScreen: 'FleaMarketWrite',
+          articleScreen: 'FleaMarketArticle',
+        }}
         options={{
           headerTitle: '중고장터',
           tabBarIcon: ({ focused }) => (
@@ -95,7 +103,11 @@ export default function MainTab() {
       <Tab.Screen
         name="JobSearch"
         component={Board}
-        initialParams={{ articleType: 'JOB_SEARCH' }}
+        initialParams={{
+          articleType: 'JOB_SEARCH',
+          writeScreen: 'JobSearchWrite',
+          articleScreen: 'JobSearchArticle',
+        }}
         options={{
           headerTitle: '구인구직',
           tabBarIcon: ({ focused }) => (
