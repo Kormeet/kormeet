@@ -32,8 +32,8 @@ export default function Article({ title, nickname, content, info }) {
     <Container>
       <Title>{title}</Title>
       <Nickname>작성자 : {nickname}</Nickname>
-      <Nickname>희망 판매 가격 : {info.price}</Nickname>
-      <Nickname>희망 거래 장소 : {info.place}</Nickname>
+      {info && <Nickname>희망 판매 가격 : {info.price}</Nickname>}
+      {info && <Nickname>희망 거래 장소 : {info.place}</Nickname>}
       <Content>{content}</Content>
     </Container>
   )
