@@ -29,6 +29,10 @@ const StyledLabel = styled.Text`
   font-size: 20px;
 `;
 
+const WarningText = styled.Text`
+  color: red;
+`;
+
 export default function ChangeInfo({ navigation }) {
   // 필드 값
   const [id, setId] = useState('');
@@ -40,12 +44,41 @@ export default function ChangeInfo({ navigation }) {
   // 인증 및 중복확인 여부
   const [idSuccess, setIdSuccess] = useState(false);
   const [nicknameSuccess, setNicknameSuccess] = useState(false);
+  // Warning Texts
+  const [emailWT, setEmailWT] = useState('');
+  const [passwordWT, setPasswordWT] = useState('');
 
   useEffect(() => {
     setDisabled(
-      !(id && pw && pwConfirm && nickname && idSuccess && nicknameSuccess)
+      !(
+        id &&
+        pw &&
+        pwConfirm &&
+        nickname &&
+        idSuccess &&
+        nicknameSuccess &&
+        passwordWT === ''
+      )
     );
   }, [id, pw, pwConfirm, nickname, idSuccess, nicknameSuccess]);
+
+  useEffect(() => {
+    if (!id) setEmailWT('');
+    else if (
+      !/^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/.test(
+        id
+      )
+    )
+      setEmailWT('이메일 형식에 맞지 않습니다.');
+    else setEmailWT('');
+  }, [id]);
+
+  useEffect(() => {
+    if (!pw) setPasswordWT('');
+    else if (pw.length < 6) setPasswordWT('비밀번호는 6자 이상이어야 합니다.');
+    else if (pw !== pwConfirm) setPasswordWT('비밀번호가 일치하지 않습니다.');
+    else setPasswordWT('');
+  }, [pw, pwConfirm]);
 
   const idChanged = value => {
     if (idSuccess === true) setIdSuccess(false);
@@ -58,55 +91,44 @@ export default function ChangeInfo({ navigation }) {
   };
 
   const nicknameConfirmClicked = () => {
-    //중복확인 코드
-    //만약 (중복없다면)
-    // 사용가능한 닉네임입니다. (// 경고 메시지로 수정)
-    Alert.alert('', 'ㅇㅈ');
-    setNicknameSuccess(true);
-    // 만약 (중복있다면)
-    // 알림메시지 사용할 수 없는 닉네임입니다. (// 경고 메시지로 수정)
+    if (true) {
+      // 중복없다고 가정
+      setNicknameSuccess(true);
+      Alert.alert('사용 가능한 닉네임입니다.');
+    }
   };
 
   const idConfirmClicked = () => {
-    //중복확인 코드
-    //만약 (중복없다면)
-    // 사용가능한 아이디입니다.(// 경고 메시지로 수정)
-    Alert.alert('ㅇㅈ', 'ㅇㅈ');
-    setIdSuccess(true);
-    // 만약 (중복있다면)
-    // 알림메시지 사용할 수 없는 아이디입니다. (// 경고 메시지로 수정)
+    if (true) {
+      // 중복없다고 가정
+      Alert.alert('이메일 중복 확인', '사용가능한 이메일입니다.');
+      setIdSuccess(true);
+    }
   };
 
   const changeInfoClicked = () => {
-    if (pw === pwConfirm) {
-      Alert.alert(
-        '개인정보 변경',
-        '회원님의 개인정보가 정상적으로 변경되었습니다.',
-        [
-          {
-            text: '확인',
-            onPress: () => {
-              navigation.navigate('MyInfo');
-            },
+    Alert.alert(
+      '개인정보 변경',
+      '회원님의 개인정보가 정상적으로 변경되었습니다. (미구현 기능입니다)',
+      [
+        {
+          text: '확인',
+          onPress: () => {
+            navigation.navigate('MyInfo');
           },
-        ]
-      );
-    } else {
-      // 경고 메시지로 수정
-      Alert.alert('개인정보 변경', '비밀번호가 일치하지 않습니다', [
-        { text: '확인' },
-      ]);
-    }
+        },
+      ]
+    );
   };
 
   return (
     <MainContainer>
       <Container>
         <FormView>
-          <StyledLabel>아이디</StyledLabel>
+          <StyledLabel>이메일</StyledLabel>
           <RowContainer>
             <BasicTextInput
-              placeholder="아이디 입력"
+              placeholder="이메일 입력"
               onChangeText={idChanged}
               width="78%"
             />
@@ -115,9 +137,10 @@ export default function ChangeInfo({ navigation }) {
               onPress={idConfirmClicked}
               isFilled
               width="20%"
-              disabled={!id || idSuccess}
+              disabled={!id || idSuccess || emailWT !== ''}
             />
           </RowContainer>
+          <WarningText>{emailWT}</WarningText>
         </FormView>
 
         <FormView>
@@ -133,6 +156,7 @@ export default function ChangeInfo({ navigation }) {
             onChangeText={setPwConfirm}
             secureTextEntry
           />
+          <WarningText>{passwordWT}</WarningText>
         </FormView>
 
         <FormView>
