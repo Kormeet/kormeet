@@ -168,6 +168,10 @@ export const findArticleById = async (id) => {
   )
 }
 
+export const deleteArticle = async (id) => {
+  await DB.collection('articles').doc(id).delete()
+}
+
 export const findAllReplies = async ({ articleId }) => {
   let query = DB.collection('replies').orderBy('createdAt')
   if (articleId)
