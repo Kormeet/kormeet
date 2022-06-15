@@ -5,6 +5,8 @@ import styled from 'styled-components/native'
 import commentImg from '../../assets/images/comment.png'
 import { theme } from '../theme'
 
+// const windowHeight = Dimensions.get('window').height
+
 const StyledPressable = styled.Pressable`
   flex-direction: row;
   align-items: center;
@@ -18,10 +20,13 @@ const StyledPressable = styled.Pressable`
 const TextContainer = styled.View`
   flex-direction: column;
   align-items: flex-start;
+  width: 80%;
 `
 
 const ReplyContainer = styled.View`
   flex-direction: row;
+  width: 20%;
+  justify-content: flex-end;
 `
 
 const Title = styled.Text`
@@ -29,7 +34,6 @@ const Title = styled.Text`
   color: ${theme.text};
   font-size: 17px;
   font-weight: bold;
-  overflow: hidden;
 `
 
 const Content = styled.Text`
@@ -42,23 +46,12 @@ const Reply = styled.Text`
   font-size: 13px;
 `
 
-export default function ArticleButton({
-  title: _title,
-  content: _content,
-  reply,
-  onPress,
-}) {
-  const [title, setTitle] = useState(
-    _title.length < 30 ? _title : _title.substring(0, 27) + '...'
-  )
-  const [content, setContent] = useState(
-    _content.length < 40 ? _content : _content.substring(0, 37) + '...'
-  )
+export default function ArticleButton({ title, content, reply, onPress }) {
   return (
     <StyledPressable onPress={onPress}>
       <TextContainer>
-        <Title>{title}</Title>
-        <Content>{content}</Content>
+        <Title numberOfLines={1}>{title}</Title>
+        <Content numberOfLines={1}>{content}</Content>
       </TextContainer>
       <ReplyContainer>
         <Image
