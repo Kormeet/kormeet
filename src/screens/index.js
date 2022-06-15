@@ -9,6 +9,7 @@ import ChannelCreation from './ChannelCreation'
 import MainPage from './MainPage'
 import MyInfo from './MyInfo'
 import BulletinBoardWrite from './BulletinBoardWrite'
+import ReportPage from './ReportPage'
 
 export {
   Login,
@@ -22,4 +23,5 @@ export {
   MainPage,
   MyInfo,
   BulletinBoardWrite,
+  ReportPage,
 }

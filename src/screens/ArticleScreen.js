@@ -117,7 +117,7 @@ export default function ArticleScreen({ navigation, route }) {
               <BasicButton
                 title="신고하기"
                 onPress={() => {
-                  console.log('신고하기 화면으로!!')
+                  navigation.navigate('ReportPage')
                 }}
                 isFilled
               />
