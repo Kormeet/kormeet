@@ -1,15 +1,15 @@
-import React, { useEffect, useState, useContext } from 'react'
-import { Alert } from 'react-native'
-import styled from 'styled-components/native'
-import BasicButton from '../components/BasicButton'
-import BasicTextInput from '../components/BasicTextInput'
-import { ProgressContext, UserContext } from '../contexts'
+import React, { useEffect, useState, useContext } from 'react';
+import { Alert } from 'react-native';
+import styled from 'styled-components/native';
+import BasicButton from '../components/BasicButton';
+import BasicTextInput from '../components/BasicTextInput';
+import { ProgressContext, UserContext } from '../contexts';
 import {
   existEmail,
   existNickname,
   existPhoneNumber,
   signup,
-} from '../utils/firebase'
+} from '../utils/firebase';
 
 const MainContainer = styled.ScrollView`
   margin: 0 auto;
@@ -17,59 +17,60 @@ const MainContainer = styled.ScrollView`
   background-color: ${({ theme }) => theme.background};
   height: 100%;
   padding-top: 20px;
-`
+`;
 
 const Container = styled.View`
   margin: 0 auto;
   width: 80%;
-`
+`;
 
 const FormView = styled.View`
   margin: 0 0 20px 0;
-`
+`;
 
 const RowContainer = styled.View`
   flex-direction: row;
   justify-content: space-between;
   margin: 0 0 5px 0;
-`
+`;
 
 const StyledLabel = styled.Text`
   font-size: 20px;
-`
+`;
 
 const WarningText = styled.Text`
   color: red;
-`
+`;
 
 export default function Signup({ navigation }) {
   // 필드 값
-  const [phoneNo, setPhoneNo] = useState('')
-  const [phoneConfirm, setPhoneConfirm] = useState('')
-  const [generatedPhoneConfirm, setGeneratedPhoneConfirm] = useState('')
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [passwordConfirm, setPasswordConfirm] = useState('')
-  const [nickname, setNickname] = useState('')
+  const [phoneNo, setPhoneNo] = useState('');
+  const [phoneConfirm, setPhoneConfirm] = useState('');
+  const [generatedPhoneConfirm, setGeneratedPhoneConfirm] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [passwordConfirm, setPasswordConfirm] = useState('');
+  const [nickname, setNickname] = useState('');
 
   // Warning Texts
-  const [emailWT, setEmailWT] = useState('')
-  const [passwordWT, setPasswordWT] = useState('')
-  const [phoneNoWT, setPhoneNoWT] = useState('')
+  const [emailWT, setEmailWT] = useState('');
+  const [passwordWT, setPasswordWT] = useState('');
+  const [phoneNoWT, setPhoneNoWT] = useState('');
+  const [nicknameWT, setNicknameWT] = useState('');
 
   // Context
-  const { dispatch } = useContext(UserContext)
-  const { spinner } = useContext(ProgressContext)
+  const { dispatch } = useContext(UserContext);
+  const { spinner } = useContext(ProgressContext);
 
   // 버튼 활성화 여부
-  const [disabled, setDisabled] = useState(true)
+  const [disabled, setDisabled] = useState(true);
   // 인증 및 중복확인 여부
-  const [phoneNoSuccess, setPhoneNoSuccess] = useState(false)
-  const [idSuccess, setIdSuccess] = useState(false)
-  const [passwordValid, setPasswordValid] = useState(false)
-  const [emailValid, setEmailValid] = useState(false)
-  const [phoneNoValid, setPhoneNoValid] = useState(false)
-  const [nicknameSuccess, setNicknameSuccess] = useState(false)
+  const [phoneNoSuccess, setPhoneNoSuccess] = useState(false);
+  const [idSuccess, setIdSuccess] = useState(false);
+  const [passwordValid, setPasswordValid] = useState(false);
+  const [emailValid, setEmailValid] = useState(false);
+  const [phoneNoValid, setPhoneNoValid] = useState(false);
+  const [nicknameSuccess, setNicknameSuccess] = useState(false);
 
   useEffect(() => {
     setDisabled(
@@ -85,7 +86,7 @@ export default function Signup({ navigation }) {
         emailValid &&
         phoneNoValid
       )
-    )
+    );
   }, [
     email,
     password,
@@ -97,7 +98,7 @@ export default function Signup({ navigation }) {
     passwordValid,
     emailValid,
     phoneNoValid,
-  ])
+  ]);
 
   useEffect(() => {
     setPasswordValid(
@@ -105,128 +106,128 @@ export default function Signup({ navigation }) {
         passwordConfirm &&
         password === passwordConfirm &&
         password.length > 5
-    )
-    if (!password) setPasswordWT('')
+    );
+    if (!password) setPasswordWT('');
     else if (password.length < 6)
-      setPasswordWT('비밀번호는 6자 이상이어야 합니다.')
+      setPasswordWT('비밀번호는 6자 이상이어야 합니다.');
     else if (password !== passwordConfirm)
-      setPasswordWT('비밀번호가 일치하지 않습니다.')
-    else setPasswordWT('')
-  }, [password, passwordConfirm])
+      setPasswordWT('비밀번호가 일치하지 않습니다.');
+    else setPasswordWT('');
+  }, [password, passwordConfirm]);
 
   useEffect(() => {
     setEmailValid(
       /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/.test(
         email
       )
-    )
-    if (!email) setEmailWT('')
+    );
+    if (!email) setEmailWT('');
     else if (
       !/^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/.test(
         email
       )
     )
-      setEmailWT('이메일 형식에 맞지 않습니다.')
-    else setEmailWT('')
-  }, [email])
+      setEmailWT('이메일 형식에 맞지 않습니다.');
+    else setEmailWT('');
+  }, [email]);
 
   useEffect(() => {
     setPhoneNoValid(
       /^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/.test(phoneNo)
-    )
-  }, [phoneNo])
+    );
+  }, [phoneNo]);
 
   const phoneNoClicked = async () => {
     if (!/^01([0|1|6|7|8|9])-?([0-9]{3,4})-?([0-9]{4})$/.test(phoneNo)) {
-      setPhoneNoWT('전화번호 형식에 맞지 않습니다.')
-      return
+      setPhoneNoWT('전화번호 형식에 맞지 않습니다.');
+      return;
     } else if (await existPhoneNumber(phoneNo)) {
-      setPhoneNoWT('이미 사용중인 전화번호입니다.')
-      return
+      setPhoneNoWT('이미 사용중인 전화번호입니다.');
+      return;
     }
-    const gen = `${Math.floor(Math.random() * 9000) + 1000}`
-    console.log(gen)
-    setGeneratedPhoneConfirm(gen)
-    setPhoneNoWT('인증번호가 전송되었습니다.')
-  }
+    const gen = `${Math.floor(Math.random() * 9000) + 1000}`;
+    console.log(gen);
+    setGeneratedPhoneConfirm(gen);
+    setPhoneNoWT('인증번호가 전송되었습니다.');
+  };
 
   const phoneConfirmClicked = () => {
     if (phoneConfirm === generatedPhoneConfirm) {
       // 경고 메시지로 수정
-      Alert.alert('전화번호 인증', '인증되었습니다')
-      setPhoneNoSuccess(true)
-      setPhoneNoWT('')
+      Alert.alert('전화번호 인증', '인증되었습니다');
+      setPhoneNoSuccess(true);
+      setPhoneNoWT('');
     } else {
-      // 경고 메시지로 수정
-      Alert.alert('전화번호 인증', '인증 실패')
-      setPhoneNoSuccess(false)
-      setPhoneNoWT('인증에 실패하였습니다.')
+      Alert.alert('전화번호 인증', '인증 실패');
+      setPhoneNoSuccess(false);
+      setPhoneNoWT('인증에 실패하였습니다.');
     }
-  }
+  };
 
-  const idChanged = (value) => {
-    if (idSuccess === true) setIdSuccess(false)
-    setEmail(value)
-  }
+  const idChanged = value => {
+    if (idSuccess === true) setIdSuccess(false);
+    setEmail(value);
+  };
 
   const emailConfirmClicked = async () => {
     if (!emailValid) {
-      Alert.alert('이메일이 형식에 맞지 않습니다.')
-      return
+      Alert.alert('이메일이 형식에 맞지 않습니다.');
+      return;
     }
 
-    const _email = email.trim()
-    const exist = await existEmail(_email)
+    const _email = email.trim();
+    const exist = await existEmail(_email);
     if (exist) {
-      setIdSuccess(false)
-      setEmailWT('이미 사용중인 이메일입니다.')
+      setIdSuccess(false);
+      setEmailWT('이미 사용중인 이메일입니다.');
     } else {
-      setIdSuccess(true)
-      Alert.alert('사용 가능한 이메일입니다.')
-      setEmailWT('')
+      setIdSuccess(true);
+      Alert.alert('사용 가능한 이메일입니다.');
+      setEmailWT('');
     }
-  }
+  };
 
-  const nicknameChanged = (value) => {
-    if (nicknameSuccess === true) setNicknameSuccess(false)
-    setNickname(value)
-  }
+  const nicknameChanged = value => {
+    if (nicknameSuccess === true) setNicknameSuccess(false);
+    setNickname(value);
+  };
 
   const nicknameConfirmClicked = async () => {
-    const _nickname = nickname.trim()
-    const exist = await existNickname(_nickname)
+    const _nickname = nickname.trim();
+    const exist = await existNickname(_nickname);
     if (exist) {
-      setNicknameSuccess(false)
-      Alert.alert('이미 존재하는 닉네임입니다.')
+      setNicknameSuccess(false);
+      setNicknameWT('이미 존재하는 닉네임입니다.');
     } else {
-      setNicknameSuccess(true)
-      Alert.alert('사용 가능한 닉네임입니다.')
+      setNicknameSuccess(true);
+      Alert.alert('사용 가능한 닉네임입니다.');
+      setNicknameWT('');
     }
-  }
+  };
 
   const signupClicked = async () => {
-    if (!emailValid) Alert.alert('이메일이 형식에 맞지 않습니다.')
-    if (!passwordValid) Alert.alert('비밀번호가 일치하지 않습니다.')
+    if (!emailValid) Alert.alert('이메일이 형식에 맞지 않습니다.');
+    if (!passwordValid) Alert.alert('비밀번호가 일치하지 않습니다.');
     try {
-      spinner.start()
-      const _email = email.trim()
-      const _password = password.trim()
+      spinner.start();
+      const _email = email.trim();
+      const _password = password.trim();
       const user = await signup({
         email: _email,
         password: _password,
         phoneNumber: phoneNo,
         nickname,
-      })
+      });
       Alert.alert(
         `${nickname ? nickname : _email}님! 회원가입이 완료되었습니다. `
-      )
-      dispatch({ email: user.email, id: user.id, nickname: user.nickname })
+      );
+      dispatch({ email: user.email, id: user.id, nickname: user.nickname });
     } catch (e) {
-      Alert.alert('SignUp Error', e.message)
+      Alert.alert('SignUp Error', e.message);
     } finally {
-      spinner.stop()
+      spinner.stop();
     }
-  }
+  };
 
   return (
     <MainContainer showsVerticalScrollIndicator={false}>
@@ -328,6 +329,7 @@ export default function Signup({ navigation }) {
               disabled={!nickname || nicknameSuccess}
             />
           </RowContainer>
+          <WarningText>{nicknameWT}</WarningText>
         </FormView>
         <BasicButton
           title="회원 가입"
@@ -337,5 +339,5 @@ export default function Signup({ navigation }) {
         />
       </Container>
     </MainContainer>
-  )
+  );
 }

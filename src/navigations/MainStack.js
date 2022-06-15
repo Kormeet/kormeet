@@ -9,10 +9,11 @@ import ArticleScreen from '../screens/ArticleScreen'
 import FleaMarketWrite from '../screens/FleaMarketWrite'
 import FleaMarketArticleScreen from '../screens/FleaMarketArticleScreen'
 
-const Stack = createStackNavigator()
+
+const Stack = createStackNavigator();
 
 export default function MainStack() {
-  const theme = useContext(ThemeContext)
+  const theme = useContext(ThemeContext);
   return (
     <Stack.Navigator
       initialRouteName="Main"
@@ -39,7 +40,7 @@ export default function MainStack() {
       <Stack.Screen
         name="ConfirmPw"
         component={ConfirmPw}
-        options={{ headerTitle: '비밀번호 확인' }}
+        options={{ headerTitle: '비밀번호 인증' }}
       />
       <Stack.Screen
         name="ChangeInfo"
@@ -83,5 +84,5 @@ export default function MainStack() {
         options={{ headerTitle: '신고하기' }}
       />
     </Stack.Navigator>
-  )
+  );
 }
