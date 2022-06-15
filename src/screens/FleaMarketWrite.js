@@ -5,29 +5,7 @@ import BasicButton from '../components/BasicButton'
 import { Alert, Text } from 'react-native'
 import { createArticle } from '../utils/firebase'
 import { UserContext } from '../contexts'
-
-const MainContainer = styled.View`
-  align-items: center;
-  background-color: ${({ theme }) => theme.background};
-  padding-top: 50px;
-  height: 100%;
-`
-
-const Container = styled.View`
-  width: 80%;
-`
-
-const BlankContainer = styled.View`
-  height: 10%;
-`
-
-const BlankContainerTitle = styled.View`
-  height: 5%;
-`
-
-const BlankContainerPrice = styled.View`
-  height: 2%;
-`
+import ArticleWrite from './ArticleWrite'
 
 export default function FleaMarketWrite({ navigation, route }) {
   const { user } = useContext(UserContext)
@@ -53,10 +31,10 @@ export default function FleaMarketWrite({ navigation, route }) {
       Alert.alert('게시글 작성', '내용을 입력해주세요')
       return
     }
-    if (_price.length <1) {
+    if (_price.length < 1) {
       Alert.alert('게시글 작성', '가격을 입력해주세요')
     }
-    if (_place.length <1) {
+    if (_place.length < 1) {
       Alert.alert('게시글 작성', '거래 장소를 입력해주세요')
     }
     await createArticle({
@@ -78,54 +56,23 @@ export default function FleaMarketWrite({ navigation, route }) {
     // }
   }
   return (
-    <MainContainer>
-      <Container>
-        <BasicTextInput
-          onChangeText={setTitle}
-          placeholder="제목"
-          fontSize="20px"
-          width="100%"
-          smargin="0 0 5px 0"
-          value={title}
-        />
-        <BlankContainerTitle />
-        <BasicTextInput
-          onChangeText={setContent}
-          placeholder="내용"
-          fontSize="20px"
-          smargin="0 0 5px 0"
-          value={content}
-          height="50%"
-          multiline={true}
-        />
-        <BlankContainerPrice/>
-        <BasicTextInput
-          onChangeText={setPrice}
-          placeholder="가격"
-          fontSize="20px"
-          width="100%"
-          smargin="0 0 5px 0"
-          value={price}
-        />
-        <BlankContainerPrice/>
-        <BasicTextInput
-          onChangeText={setPlace}
-          placeholder="위치"
-          fontSize="20px"
-          width="100%"
-          smargin="0 0 5px 0"
-          value={place}
-        />
-        <BlankContainer />
-        <BasicButton
-          title="작성하기"
-          onPress={onClickSubmit}
-          fontSize="30px"
-          width="100%"
-          smargin="0 0 5px 0"
-          isFilled
-        />
-      </Container>
-    </MainContainer>
+    <ArticleWrite navigation={navigation} route={route}>
+      <BasicTextInput
+        onChangeText={setPrice}
+        placeholder="가격"
+        fontSize="20px"
+        width="100%"
+        smargin="0 0 5px 0"
+        value={price}
+      />
+      <BasicTextInput
+        onChangeText={setPlace}
+        placeholder="위치"
+        fontSize="20px"
+        width="100%"
+        smargin="0 0 5px 0"
+        value={place}
+      />
+    </ArticleWrite>
   )
 }

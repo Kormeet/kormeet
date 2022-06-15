@@ -4,8 +4,9 @@ import { Image } from 'react-native'
 import { ThemeContext } from 'styled-components'
 import MainTab from './MainTab'
 import Logo from '../../assets/images/logo.png'
-import { ConfirmPw, ChangeInfo, BulletinBoardArticle, BulletinBoardWrite } from '../screens'
+import { ConfirmPw, ChangeInfo, ArticleWrite } from '../screens'
 import ArticleScreen from '../screens/ArticleScreen'
+import FleaMarketWrite from '../screens/FleaMarketWrite'
 
 const Stack = createStackNavigator()
 
@@ -61,8 +62,19 @@ export default function MainStack() {
       />
       <Stack.Screen
         name="BulletinBoardWrite"
-        component={BulletinBoardWrite}
-        options={{headerTitle: '게시글 작성'}}/>
+        component={ArticleWrite}
+        options={{ headerTitle: '게시글 작성' }}
+      />
+      <Stack.Screen
+        name="FleaMarketWrite"
+        component={FleaMarketWrite}
+        options={{ headerTitle: '판매글 작성' }}
+      />
+      <Stack.Screen
+        name="JobSearchWrite"
+        component={ArticleWrite}
+        options={{ headerTitle: '구인글 작성' }}
+      />
     </Stack.Navigator>
   )
 }
