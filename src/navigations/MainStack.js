@@ -1,12 +1,14 @@
-import { createStackNavigator } from '@react-navigation/stack';
-import React, { useContext } from 'react';
-import { Image } from 'react-native';
-import { ThemeContext } from 'styled-components';
-import MainTab from './MainTab';
-import Logo from '../../assets/images/logo.png';
-import { ConfirmPw, ChangeInfo, ReportPage, ArticleWrite } from '../screens';
-import ArticleScreen from '../screens/ArticleScreen';
-import FleaMarketWrite from '../screens/FleaMarketWrite';
+import { createStackNavigator } from '@react-navigation/stack'
+import React, { useContext } from 'react'
+import { Image } from 'react-native'
+import { ThemeContext } from 'styled-components'
+import MainTab from './MainTab'
+import Logo from '../../assets/images/logo.png'
+import { ConfirmPw, ChangeInfo, ReportPage, ArticleWrite } from '../screens'
+import ArticleScreen from '../screens/ArticleScreen'
+import FleaMarketWrite from '../screens/FleaMarketWrite'
+import FleaMarketArticleScreen from '../screens/FleaMarketArticleScreen'
+
 
 const Stack = createStackNavigator();
 
@@ -52,7 +54,7 @@ export default function MainStack() {
       />
       <Stack.Screen
         name="FleaMarketArticle"
-        component={ArticleScreen}
+        component={FleaMarketArticleScreen}
         options={{ headerTitle: '중고장터 게시글' }}
       />
       <Stack.Screen
