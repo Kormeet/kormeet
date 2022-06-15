@@ -57,7 +57,7 @@ export default function Board({ navigation, route }) {
   const { spinner } = useContext(ProgressContext)
 
   // params
-  const { articleType } = route.params
+  const { articleType, articleScreen, writeScreen } = route.params
 
   // states
   const [search, setSearch] = useState('')
@@ -128,7 +128,7 @@ export default function Board({ navigation, route }) {
                 content={article.content}
                 reply={article.repliesCount}
                 onPress={() => {
-                  navigation.navigate('BulletinBoardArticle', {
+                  navigation.navigate(articleScreen, {
                     articleId: article.id,
                   })
                 }}
@@ -141,7 +141,7 @@ export default function Board({ navigation, route }) {
         <BasicButton
           title="게시글 작성"
           onPress={() => {
-            navigation.navigate('BulletinBoardWrite', {
+            navigation.navigate(writeScreen, {
               articleType,
             })
           }}
