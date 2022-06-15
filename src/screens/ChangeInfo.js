@@ -93,8 +93,9 @@ export default function ChangeInfo({ navigation }) {
   const nicknameConfirmClicked = () => {
     if (true) {
       // 중복없다고 가정
-      setNicknameSuccess(true);
       Alert.alert('사용 가능한 닉네임입니다.');
+      console.log('(미구현) 중복 확인되지 않음');
+      setNicknameSuccess(true);
     }
   };
 
@@ -102,6 +103,7 @@ export default function ChangeInfo({ navigation }) {
     if (true) {
       // 중복없다고 가정
       Alert.alert('이메일 중복 확인', '사용가능한 이메일입니다.');
+      console.log('(미구현) 중복 확인되지 않음');
       setIdSuccess(true);
     }
   };
@@ -109,12 +111,13 @@ export default function ChangeInfo({ navigation }) {
   const changeInfoClicked = () => {
     Alert.alert(
       '개인정보 변경',
-      '회원님의 개인정보가 정상적으로 변경되었습니다. (미구현 기능입니다)',
+      '회원님의 개인정보가 정상적으로 변경되었습니다.',
       [
         {
           text: '확인',
           onPress: () => {
             navigation.navigate('MyInfo');
+            console.log('(미구현) 개인정보 변경되지 않음');
           },
         },
       ]
