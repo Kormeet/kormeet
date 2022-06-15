@@ -116,13 +116,14 @@ const convertDocsToArticles = async (docs) => {
 }
 
 export const createArticle = async ({ title, content, type, userId }) => {
-  await DB.collection('articles').add({
+  const doc = await DB.collection('articles').add({
     title,
     content,
     type,
     createdAt: firebase.firestore.Timestamp.fromDate(new Date()),
     userRef: await DB.collection('users').doc(userId),
   })
+  return doc.id
 }
 
 export const findAllArticles = async ({
@@ -217,4 +218,36 @@ export const createReply = async ({
 
 export const deleteReply = async (id) => {
   await DB.collection('replies').doc(id).delete()
+}
+
+export const createFleaMarketArticleInfo = async ({
+  price,
+  place,
+  articleId,
+}) => {
+  await DB.collection('fleaMarketArticleInfos').add({
+    price,
+    place,
+    articleRef: await DB.collection('articles').doc(articleId),
+  })
+}
+
+const convertDocToFleaMarketArticleInfo = async (doc) => {
+  const data = doc.data()
+  return {
+    id: doc.id,
+    place: data.place,
+    price: data.price,
+  }
+}
+
+export const findFleaMarketArticleInfoByArticleId = async (articleId) => {
+  const qs = await DB.collection('fleaMarketArticleInfos')
+    .where('articleRef', '==', await DB.collection('articles').doc(articleId))
+    .get()
+  return convertDocToFleaMarketArticleInfo(qs.docs[0])
+}
+
+export const deleteFleaMarketArticleInfo = async (id) => {
+  await DB.collection('fleaMarketArticleInfos').doc(id).delete()
 }

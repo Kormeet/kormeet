@@ -27,11 +27,13 @@ const Content = styled.Text`
   background-color: lightgray;
 `
 
-export default function Article({ title, nickname, content }) {
+export default function Article({ title, nickname, content, info }) {
   return (
     <Container>
       <Title>{title}</Title>
       <Nickname>작성자 : {nickname}</Nickname>
+      <Nickname>희망 판매 가격 : {info.price}</Nickname>
+      <Nickname>희망 거래 장소 : {info.place}</Nickname>
       <Content>{content}</Content>
     </Container>
   )
