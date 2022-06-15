@@ -12,7 +12,7 @@ import {
   findArticleById,
 } from '../utils/firebase'
 import { ProgressContext, UserContext } from '../contexts'
-import { Alert } from 'react-native'
+import { Alert, Text, View } from 'react-native'
 
 const MainContainer = styled.View`
   align-items: center;
@@ -50,7 +50,7 @@ const ButtonView = styled.View`
   margin-top: 10px;
 `
 
-export default function ArticleScreen({ navigation, route }) {
+export default function ArticleScreen({ navigation, route, info, onDelete }) {
   // contexts
   const { spinner } = useContext(ProgressContext)
   const { user } = useContext(UserContext)
@@ -95,6 +95,7 @@ export default function ArticleScreen({ navigation, route }) {
     replies.forEach((r) => deleteReply(r.id))
     await deleteArticle(id)
     Alert.alert('게시글 삭제', '게시글을 삭제하였습니다.')
+    onDelete()
     navigation.goBack()
   }
 
@@ -119,6 +120,7 @@ export default function ArticleScreen({ navigation, route }) {
               title={article.title}
               nickname={article.user.nickname}
               content={article.content}
+              info={info}
             />
             <ButtonView>
               {user.id === article.user.id ? (

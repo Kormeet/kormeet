@@ -1,10 +1,10 @@
-import React, { useContext, useEffect, useLayoutEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import styled from 'styled-components/native'
 import BasicTextInput from '../components/BasicTextInput'
 import BasicButton from '../components/BasicButton'
 import { Alert, Text, View } from 'react-native'
 import { createArticle } from '../utils/firebase'
-import { UserContext } from '../contexts'
+import { ProgressContext, UserContext } from '../contexts'
 
 const MainContainer = styled.View`
   background-color: ${({ theme }) => theme.background};
@@ -18,16 +18,15 @@ const Container = styled.ScrollView`
   width: 80%;
 `
 
-const BlankContainer = styled.View`
-  height: 15%;
-`
-
-const BlankContainerTitle = styled.View`
-  height: 5%;
-`
-
-export default function ArticleWrite({ navigation, route, children }) {
+export default function ArticleWrite({
+  navigation,
+  route,
+  Inputs,
+  beforeSubmit: _beforeSubmit,
+  onSubmit: _onSubmit,
+}) {
   const { user } = useContext(UserContext)
+  const { spinner } = useContext(ProgressContext)
 
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
@@ -35,24 +34,33 @@ export default function ArticleWrite({ navigation, route, children }) {
 
   const { articleType } = route.params
 
-  const onClickSubmit = async () => {
+  const beforeSubmit = () => {
     const _title = title.trim()
     const _content = content.trim()
     if (_title.length < 1) {
       Alert.alert('게시글 작성', '제목을 입력해주세요')
-      return
+      return false
     }
     if (_content.length < 1) {
       Alert.alert('게시글 작성', '내용을 입력해주세요')
-      return
+      return false
     }
-    await createArticle({
-      title: _title,
-      content: _content,
+    if (_beforeSubmit) return _beforeSubmit()
+    else return true
+  }
+
+  const onClickSubmit = async () => {
+    spinner.start()
+    if (!beforeSubmit()) return
+    const articleId = await createArticle({
+      title: title.trim(),
+      content: content.trim(),
       type: articleType,
       userId: user.id,
     })
+    if (_onSubmit) _onSubmit(articleId)
     navigation.goBack()
+    spinner.stop()
   }
 
   const onChangeContentHeight = (event) => {
@@ -79,7 +87,7 @@ export default function ArticleWrite({ navigation, route, children }) {
           onContentSizeChange={onChangeContentHeight}
           height={Math.max(contentHeight, 200) + 'px'}
         />
-        <View>{children}</View>
+        {Inputs}
         <BasicButton
           title="작성하기"
           onPress={onClickSubmit}
