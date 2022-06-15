@@ -6,6 +6,7 @@ import Article from '../components/Article'
 import Comment from '../components/Comment'
 import {
   createReply,
+  deleteArticle,
   deleteReply,
   findAllReplies,
   findArticleById,
@@ -83,12 +84,18 @@ export default function ArticleScreen({ navigation, route }) {
   useEffect(() => {
     loadData()
   }, [])
-  const onDeleteClicked = (id) => async () => {
+  const onReplyDeleteClicked = (id) => async () => {
     spinner.start()
     await deleteReply(id)
     await loadReplies()
     Alert.alert('댓글 삭제', '댓글을 삭제하였습니다.')
     spinner.stop()
+  }
+  const onArticleDeleteClicked = (id) => async () => {
+    replies.forEach((r) => deleteReply(r.id))
+    await deleteArticle(id)
+    Alert.alert('게시글 삭제', '게시글을 삭제하였습니다.')
+    navigation.goBack()
   }
 
   const onCommentSubmit = async () => {
@@ -114,13 +121,21 @@ export default function ArticleScreen({ navigation, route }) {
               content={article.content}
             />
             <ButtonView>
-              <BasicButton
-                title="신고하기"
-                onPress={() => {
-                  navigation.navigate('ReportPage')
-                }}
-                isFilled
-              />
+              {user.id === article.user.id ? (
+                <BasicButton
+                  title="삭제"
+                  onPress={onArticleDeleteClicked(article.id)}
+                  isFilled
+                />
+              ) : (
+                <BasicButton
+                  title="신고"
+                  onPress={() => {
+                    navigation.navigate('ReportPage')
+                  }}
+                  isFilled
+                />
+              )}
             </ButtonView>
           </ArticleContainer>
           <CommentList>
@@ -130,7 +145,7 @@ export default function ArticleScreen({ navigation, route }) {
                 nickname={reply.user.nickname}
                 content={reply.content}
                 isMine={reply.user.email === user.email ? true : false}
-                onDeleteClicked={onDeleteClicked(reply.id)}
+                onDeleteClicked={onReplyDeleteClicked(reply.id)}
               />
             ))}
           </CommentList>
