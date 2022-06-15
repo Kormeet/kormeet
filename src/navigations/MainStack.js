@@ -4,7 +4,7 @@ import { Image } from 'react-native'
 import { ThemeContext } from 'styled-components'
 import MainTab from './MainTab'
 import Logo from '../../assets/images/logo.png'
-import { ConfirmPw, ChangeInfo, ArticleWrite } from '../screens'
+import { ConfirmPw, ChangeInfo, ReportPage, ArticleWrite } from '../screens'
 import ArticleScreen from '../screens/ArticleScreen'
 import FleaMarketWrite from '../screens/FleaMarketWrite'
 
@@ -74,6 +74,12 @@ export default function MainStack() {
         name="JobSearchWrite"
         component={ArticleWrite}
         options={{ headerTitle: '구인글 작성' }}
+      />
+
+      <Stack.Screen
+        name="ReportPage"
+        component={ReportPage}
+        options={{ headerTitle: '신고하기' }}
       />
     </Stack.Navigator>
   )
