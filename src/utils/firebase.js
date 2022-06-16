@@ -149,8 +149,8 @@ export const findAllArticles = async ({
   return convertDocsToArticles((await query.get()).docs)
 }
 
-export const searchBulletinArticles = async (line) => {
-  const articles = await findAllArticles({ type: 'BULLETIN' })
+export const searchBulletinArticles = async (line, type) => {
+  const articles = await findAllArticles({ type })
   if (!line.trim()) return articles
   const keywords = line.split(' ').map((w) => w.trim())
   const filtered = articles.filter((a) => {

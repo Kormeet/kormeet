@@ -92,7 +92,7 @@ export default function Board({ navigation, route }) {
 
   const searchArticle = async () => {
     spinner.start()
-    setArticles(await searchBulletinArticles(search))
+    setArticles(await searchBulletinArticles(search, articleType))
     spinner.stop()
   }
   return (
